@@ -5,6 +5,7 @@ using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
 using QdaoCaseManager.Components.Account;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
 using Serilog;
 
@@ -40,6 +41,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
+
+// Application Services Register
+builder.Services.AddApplicationServices();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
