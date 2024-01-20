@@ -5,6 +5,7 @@ using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
 using QdaoCaseManager.Components.Account;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Middlewares;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,9 @@ var app = builder.Build();
 
 //Configure Serilog
 app.UseSerilogRequestLogging();
+
+// Global Exception Handler
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
