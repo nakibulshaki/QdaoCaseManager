@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using QdaoCaseManager.Client;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Shared.Entites;
 using System.Diagnostics;
 using System.Security.Claims;
 

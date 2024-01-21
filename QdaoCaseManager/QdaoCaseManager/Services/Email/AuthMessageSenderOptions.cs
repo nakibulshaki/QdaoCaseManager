@@ -1,7 +1,6 @@
-﻿namespace QdaoCaseManager.Services.Email
+﻿namespace QdaoCaseManager.Services.Email;
+public class AuthMessageSenderOptions
 {
-    public class AuthMessageSenderOptions
-    {
-        public string? SendGridKey { get; set; }
-    }
+    public string? SendGridKey { get; set; }
 }
+

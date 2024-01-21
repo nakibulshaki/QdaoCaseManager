@@ -4,17 +4,15 @@ using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Services.Email;
 using QdaoCaseManager.Services.Notes;
 
-namespace QdaoCaseManager.Extentions
+namespace QdaoCaseManager.Extentions;
+public static class ApplicationServiceExtensions
 {
-    public static class ApplicationServiceExtensions
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            //DI Register Here
-            services.AddScoped<ICaseAppService,CaseAppService>();
-            services.AddScoped<INoteAppService,NoteAppService>();
+        //DI Register Here
+        services.AddScoped<ICaseAppService, CaseAppService>();
+        services.AddScoped<INoteAppService, NoteAppService>();
 
-            return services;
-        }
+        return services;
     }
 }

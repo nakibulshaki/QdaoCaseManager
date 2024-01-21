@@ -7,6 +7,7 @@ using Microsoft.Extensions.Primitives;
 using QdaoCaseManager.Components.Account.Pages;
 using QdaoCaseManager.Components.Account.Pages.Manage;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Shared.Entites;
 using System.Security.Claims;
 using System.Text.Json;
 

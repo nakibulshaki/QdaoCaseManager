@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Shared.Entites;
 
 namespace QdaoCaseManager.Components.Account
 {

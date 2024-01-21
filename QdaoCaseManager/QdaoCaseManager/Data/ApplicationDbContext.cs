@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Entites;
+using QdaoCaseManager.Shared.Entites;
 
 namespace QdaoCaseManager.Data
 {
