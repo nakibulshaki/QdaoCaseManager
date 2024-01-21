@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
@@ -7,6 +8,7 @@ using QdaoCaseManager.Components.Account;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
+using QdaoCaseManager.Services.Email;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,7 +48,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 // Application Services Register
 builder.Services.AddApplicationServices();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
