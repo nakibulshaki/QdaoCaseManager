@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Services.Cases;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Controllers;
 
@@ -22,7 +23,7 @@ public class CasesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Case>>> GetCase()
+    public async Task<ActionResult<IEnumerable<CaseDto>>> GetCase()
     {
         var cases = await _caseAppService.GetCases();
         if (cases != null)
@@ -32,7 +33,7 @@ public class CasesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Case>> GetCase(int id)
+    public async Task<ActionResult<CaseDto>> GetCase(int id)
     {
         Case caseEntry = await _caseAppService.GetCaseById(id);
 
@@ -50,7 +51,7 @@ public class CasesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Case>> PostCase(Case caseEntry)
+    public async Task<ActionResult<CaseDto>> PostCase(Case caseEntry)
     {
         await _caseAppService.CreateCase(caseEntry);
         return CreatedAtAction("GetCase", new { id = caseEntry.Id }, caseEntry);

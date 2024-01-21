@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
+using System.Drawing.Printing;
 
 namespace QdaoCaseManager.Services.Cases;
 public class CaseAppService : ICaseAppService
@@ -17,35 +19,74 @@ public class CaseAppService : ICaseAppService
         await _dbContext.SaveChangesAsync();
         return caseEntry;
     }
-    public async Task<IEnumerable<Case>> GetCases()
+    public async Task<IEnumerable<CaseDto>> GetCases(FilterCaseDto filterCaseDto)
     {
-        return await _dbContext.Cases.ToListAsync();
-    }
+        var query =  _dbContext.Cases.AsQueryable();
 
-    public async Task<Case> GetCaseById(int id)
-    {
-        var Case = await _dbContext.Cases.FindAsync(id);
-        return Case;
-    }
-    public async Task<Case> UpdateCase(int id, Case updatedCase)
-    {
-        var caseEntry = await GetCaseById(id);
-        if (caseEntry == null)
-        {
-            throw new InvalidOperationException("Case not found");
+        if(!String.IsNullOrWhiteSpace(filterCaseDto.QueryString)) {
+            query = query.Where(x => x.Title.Contains(filterCaseDto.QueryString) ||
+                                     x.Description.Contains(filterCaseDto.QueryString));
         }
 
-        _dbContext.Entry(caseEntry).CurrentValues.SetValues(updatedCase);
+        if (filterCaseDto.AssignedToUserId is not null)
+            query = query.Where(x => x.AssignedToUserId == filterCaseDto.AssignedToUserId);
+
+        if (filterCaseDto.CreateFrom is not null)
+            query.Where(x => x.CreateDate >= filterCaseDto.CreateFrom);
+
+        if (filterCaseDto.CreateTo is not null)
+            query.Where(x => x.CreateDate <= filterCaseDto.CreateTo);
+
+        var result =  await query
+                        .Skip((filterCaseDto.CurrentPage - 1) * filterCaseDto.PageSize)
+                        .Take(filterCaseDto.PageSize)
+                        .Select(x=> new CaseDto { 
+                            Id = x.Id,
+                            Title= x.Title,
+                            Description = x.Description,
+                            Status = x.Status,
+                            AssignedToUserName = x.AssignedToUser.UserName,
+                            NumberOfNotes = x.Notes.Count(),
+                            CreateDate = x.CreateDate
+                            }).ToListAsync();
+        return result;
+    }
+
+    public async Task<CaseDto> GetCaseById(int id)
+    {
+        var caseDto = await _dbContext.Cases
+                    .Select(x => new CaseDto
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        Status = x.Status,
+                        AssignedToUserName = x.AssignedToUser.UserName,
+                        NumberOfNotes = x.Notes.Count(),
+                        CreateDate = x.CreateDate
+                    }).FirstOrDefaultAsync();
+
+        if(caseDto is null)
+          throw new NullReferenceException($"Case not found with ID:{id}");
+
+        return caseDto;
+    }
+    public async Task UpdateCase(int id, CreateUpdateCaseDto updatedCase)
+    {
+        var caseEntry = await _dbContext.Cases.FindAsync(id);
+        if (caseEntry is null) throw new NullReferenceException($"Case not found with ID:{id}");
+
+        caseEntry.Title= updatedCase.Title;
+        caseEntry.Description= updatedCase.Description; 
+        caseEntry.Status= updatedCase.Status;
+        caseEntry.AssignedToUserId = updatedCase.AssignedToUserId;
+
         await _dbContext.SaveChangesAsync();
-        return caseEntry;
     }
     public async Task DeleteCase(int id)
     {
-        var caseEntry = await GetCaseById(id);
-        if (caseEntry == null)
-        {
-            throw new InvalidOperationException("Case not found");
-        }
+        var caseEntry = await _dbContext.Cases.FindAsync(id);
+        if (caseEntry is null) throw new NullReferenceException($"Case not found with ID:{id}");
 
         _dbContext.Cases.Remove(caseEntry);
         await _dbContext.SaveChangesAsync();
