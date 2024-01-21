@@ -9,6 +9,7 @@ using QdaoCaseManager.Data;
 using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
 using QdaoCaseManager.Services.Email;
+using QdaoCaseManager.Shared.Entites;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
