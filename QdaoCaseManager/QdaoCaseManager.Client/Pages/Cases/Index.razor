@@ -65,7 +65,7 @@ else
             }
         </tbody>
     </table>
-    <Pagination Page="@Cases.PageIndex" TotalItems="@Cases.TotalPages" PageSize="@filter.PageSize" OnPageChanged="@OnPageChanged" />
+    <Pagination PageIndex="@Cases.PageIndex" TotalCount="@Cases.TotalCount" PageSize="@filter.PageSize" OnPageChanged="@OnPageChanged" />
 
     <div class="modal fade" id="deleteCaseModal" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
@@ -82,7 +82,7 @@ else
     </div>
 }
 @code {
-    private PaginatedList<CaseDto> Cases { get; set; } 
+    private PaginatedList<CaseDto> Cases { get; set; } = new PaginatedList<CaseDto>(new List<CaseDto>(), 1, 10, 0);
     private FilterCaseDto filter { get; set; } = new FilterCaseDto
         {
             CurrentPage = 1,

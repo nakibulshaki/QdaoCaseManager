@@ -1,27 +1,85 @@
-﻿@using System.Linq
-@using Microsoft.AspNetCore.Components
-<div class="pagination">
-    @if (Page > 1)
-    {
-        <button class="page-item" @onclick="() => OnPageChanged.InvokeAsync(Page - 1)">Previous</button>
-    }
+﻿@using Microsoft.AspNetCore.Components
 
-    @for (int i = 1; i <= PagesCount; i++)
-    {
-        <button class="page-item @(i == Page ? "active" : "")" @onclick="() => OnPageChanged.InvokeAsync(i)">@i</button>
-    }
 
-    @if (Page < PagesCount)
-    {
-        <button class="page-item" @onclick="() => OnPageChanged.InvokeAsync(Page + 1)">Next</button>
-    }
-</div>
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        @if (HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" @onclick="PreviousPage">@PreviousPageText</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link " >@PreviousPageText</a>
+            </li>
+        }
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            int currentPage = i; // Create a local variable to capture the current value of i
 
+            <li class="page-item @((i == PageIndex) ? "active" : "")">
+                <a class="page-link" @onclick="@(() => PageClick(currentPage))">@i</a>
+            </li>
+        }
+
+        @if (HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" @onclick="NextPage">@NextPageText</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a class="page-link ">@NextPageText</a>
+            </li>
+        }
+    </ul>
+</nav>
 @code {
-    [Parameter] public int Page { get; set; } = 1;
-    [Parameter] public int TotalItems { get; set; }
-    [Parameter] public int PageSize { get; set; } = 10;
-    [Parameter] public EventCallback<int> OnPageChanged { get; set; }
+    [Parameter]
+    public int PageIndex { get; set; }
+    [Parameter]
 
-    private int PagesCount => (int)Math.Ceiling((double)TotalItems / PageSize);
+    public int PageSize { get; set; }
+    [Parameter]
+
+    public int TotalCount { get; set; }
+    [Parameter]
+    public EventCallback<int> OnPageChanged { get; set; }
+    private string PreviousPageText { get; set; } = "Previous";
+
+    private string NextPageText { get; set; } = "Next";
+
+    private int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+    private bool HasPreviousPage => PageIndex > 1;
+    private bool HasNextPage => PageIndex < TotalPages;
+
+
+
+    private async Task PreviousPage()
+    {
+        if (PageIndex > 1)
+        {
+            await OnPageChanged.InvokeAsync(PageIndex - 1);
+        }
+    }
+
+    private async Task NextPage()
+    {
+        if (PageIndex < TotalPages)
+        {
+            await OnPageChanged.InvokeAsync(PageIndex + 1);
+        }
+    }
+
+    private async Task PageClick(int page)
+    {
+        if (page != PageIndex)
+        {
+            await OnPageChanged.InvokeAsync(page);
+        }
+    }
 }
