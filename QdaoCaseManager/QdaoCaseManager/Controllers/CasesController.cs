@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
+using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Entites;
@@ -24,7 +25,7 @@ public class CasesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CaseDto>>> GetCase( FilterCaseDto filter)
+    public async Task<ActionResult<PaginatedList<CaseDto>>> GetCase([FromQuery]FilterCaseDto filter)
     {
         var cases = await _caseAppService.GetCases(filter);
         if (cases != null)

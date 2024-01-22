@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Elfie.Serialization;
+using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
+using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Entites;
 using System.Drawing.Printing;
@@ -25,13 +27,13 @@ public class CaseAppService : ICaseAppService
         });
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<IEnumerable<CaseDto>> GetCases(FilterCaseDto filterCaseDto)
+    public async Task<PaginatedList<CaseDto>> GetCases(FilterCaseDto filterCaseDto)
     {
         var query =  _dbContext.Cases.AsQueryable();
 
-        if(!String.IsNullOrWhiteSpace(filterCaseDto.QueryString)) {
-            query = query.Where(x => x.Tittle.Contains(filterCaseDto.QueryString) ||
-                                     x.Description.Contains(filterCaseDto.QueryString));
+        if(!String.IsNullOrWhiteSpace(filterCaseDto.SearchString)) {
+            query = query.Where(x => x.Tittle.Contains(filterCaseDto.SearchString) ||
+                                     x.Description.Contains(filterCaseDto.SearchString));
         }
 
         if (filterCaseDto.AssignedToUserId is not null)
@@ -43,18 +45,25 @@ public class CaseAppService : ICaseAppService
         if (filterCaseDto.CreateTo is not null)
             query.Where(x => x.CreateDate <= filterCaseDto.CreateTo);
 
-        var result =  await query
-                        .Skip((filterCaseDto.CurrentPage - 1) * filterCaseDto.PageSize)
-                        .Take(filterCaseDto.PageSize)
-                        .Select(x=> new CaseDto { 
-                            Id = x.Id,
-                            Tittle= x.Tittle,
-                            Description = x.Description,
-                            Status = x.Status,
-                            AssignedToUserName = x.AssignedToUser.UserName,
-                            NumberOfNotes = x.Notes.Count(),
-                            CreateDate = x.CreateDate
-                            }).ToListAsync();
+        var queryResponse = await query
+                             .Skip((filterCaseDto.CurrentPage - 1) * filterCaseDto.PageSize)
+                             .Take(filterCaseDto.PageSize)
+                             .Select(x=> new CaseDto { 
+                                Id = x.Id,
+                                Tittle= x.Tittle,
+                                Description = x.Description,
+                                Status = x.Status,
+                                AssignedToUserName = x.AssignedToUser.UserName,
+                                NumberOfNotes = x.Notes.Count(),
+                                CreateDate = x.CreateDate
+                                }).ToListAsync();
+
+        var result = new  PaginatedList<CaseDto>(
+                            queryResponse,
+                            filterCaseDto.CurrentPage,
+                            filterCaseDto.PageSize,
+                            await query.CountAsync());
+        
         return result;
     }
 
