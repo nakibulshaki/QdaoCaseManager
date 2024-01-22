@@ -2,6 +2,7 @@
 @page "/case/add"
 @page "/case/edit/{id:int}"
 @using QdaoCaseManager.Dtos
+@using QdaoCaseManager.Shared
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
@@ -37,9 +38,10 @@ else
         <label for="Status" class="form-label">Status</label>
         <div class="col-md-4">
             <InputSelect class="form-control" @bind-Value="CaseDto.Status">
-                <option value="">-- Select Status --</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                @foreach (var status in Enum.GetValues<CaseStatus>())
+                {
+                    <option value="@status">@status.ToString()</option>
+                }
             </InputSelect>
         </div>
         <ValidationMessage For="@(() => CaseDto.Status)" />
