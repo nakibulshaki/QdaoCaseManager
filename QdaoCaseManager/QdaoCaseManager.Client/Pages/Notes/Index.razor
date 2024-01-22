@@ -1,0 +1,183 @@
+﻿@page "/note";
+@using Microsoft.AspNetCore.Authorization
+@using QdaoCaseManager.Client.Shared
+@using QdaoCaseManager.Extra
+@using QdaoCaseManager.Shared
+@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.Shared.Dtos.Cases
+@attribute [Authorize]
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
+@inject HttpClient HttpClient
+<PageTitle>Case</PageTitle>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h3>Note Data</h3>
+        <p>This component demonstrates CRUD operation on note data</p>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <a href='/case/add' class="btn btn-outline-primary" role="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                    </svg>
+                    Add
+                </a>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Search case by Note"
+                       @bind="filter.SearchString" @bind:event="oninput" @onkeyup="LoadCases" />
+            </div>
+           
+            <div class="col-md-3 ">
+                <select class="form-control" @bind="filter.Status" @bind:event="oninput" @onchange="LoadCases">
+                    <option value="null">Select Status</option>
+                    @foreach (var status in Enum.GetValues<CaseStatus>())
+                    {
+                        <option value="@status"><span>@status.ToString()</span></option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 ">
+                <select class="form-control" @bind="filter.AssignedToUserId" @bind:event="oninput" @onchange="LoadCases">
+                    <option value="null">Select Assigned User</option>
+                    @foreach (var user in UserSelectList)
+                    {
+                        <option value="@user.Value">@user.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Cases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead class="table-group-divider">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var caseItem in Cases.Items)
+            {
+                <tr>
+                    <td>@caseItem.Id</td>
+                    <td>@caseItem.Tittle</td>
+                    <td>@caseItem.Description</td>
+                    <td>
+                        <span class="@GetStatusColorClass(caseItem.Status)">
+                            @caseItem.StatusString
+                        </span>
+                    </td>
+                    <td>@caseItem.AssignedToUserName</td>
+                    <td>@caseItem.CreateDate</td>
+                    <td>
+                        <a href='/case/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
+                            Edit
+                        </a>
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal" 
+                        @onclick="(() => OpenDeleteModal(caseItem.Id))">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <Pagination PageIndex="@Cases.PageIndex" TotalCount="@Cases.TotalCount" PageSize="@filter.PageSize"  OnPageChanged="@OnPageChanged" />
+   <!-- Import the DeleteConfirmation component -->
+    <Confirmation Title="Delete Confirmation" Message="Are you sure you want to delete?" OnConfirmDelete="DeleteCase"  />
+  }
+@code {
+    private PaginatedList<CaseDto> Cases { get; set; } = new PaginatedList<CaseDto>(new List<CaseDto>(), 1, 10, 0);
+    private FilterCaseDto filter { get; set; } = new FilterCaseDto
+        {
+            CurrentPage = 1,
+            PageSize = 10
+        };
+    public IList<CaseUserSelectList> UserSelectList = new List<CaseUserSelectList>();
+    private bool isLoading = false;
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await LoadCases();
+        await LoadCaseUserSelectList();
+        isLoading = false;
+    }
+
+    protected async Task LoadCases()
+    {
+        var apiUrl = "api/cases?" +
+          $"SearchString={filter.SearchString}&" +
+          $"Status={filter.Status}&" +
+          $"CreateFrom={filter.CreateFrom?.ToString("yyyy-MM-dd")}&" +
+          $"CreateTo={filter.CreateTo?.ToString("yyyy-MM-dd")}&" +
+          $"AssignedToUserId={filter.AssignedToUserId}&" +
+          $"CurrentPage={filter.CurrentPage}&" +
+          $"PageSize={filter.PageSize}";
+
+
+        var response = await HttpClient.GetFromJsonAsync<PaginatedList<CaseDto>>(apiUrl);
+        if (response is not null)
+            Cases = response;
+        else
+            throw new Exception($"Something went wrong while getting data with : {apiUrl}");
+    }
+    protected async Task OnPageChanged(int newPage)
+    {
+        filter.CurrentPage = newPage;
+        await LoadCases();
+    }
+
+    private string GetStatusColorClass(CaseStatus status)
+    {
+        return status switch
+        {
+            CaseStatus.Open => "badge bg-info text-dark",
+            CaseStatus.Pending => "badge bg-warning text-dark",
+            CaseStatus.Assigned => "badge bg-primary text-white",
+            CaseStatus.InReview => "badge bg-secondary text-white",
+            CaseStatus.Resolved => "badge bg-success text-white",
+            CaseStatus.Closed => "badge bg-danger text-white",
+            _ => "badge bg-secondary text-white",
+        };
+    }
+    protected async Task LoadCaseUserSelectList()
+    {
+        var response = await HttpClient
+                            .GetFromJsonAsync<IList<CaseUserSelectList>>(
+                             "api/cases/GetUserSelectListItems");
+
+        if (response is not null)
+            UserSelectList = response;
+        else
+            throw new Exception($"Something went wrong while getting case user data.");
+    }
+
+    private int selectedCaseId = 0;
+
+    private void OpenDeleteModal(int caseId)
+    {
+        selectedCaseId = caseId;
+    }
+
+    private async Task DeleteCase()
+    {
+        await HttpClient.DeleteAsync($"api/cases/{selectedCaseId}");
+        await LoadCases();
+    }
+   
+}

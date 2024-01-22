@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Notes;
+using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Controllers;
@@ -24,9 +26,9 @@ public class NotesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Note>>> GetNote()
+    public async Task<ActionResult<PaginatedList<NoteDto>>> GetNote([FromQuery] FilterNoteDto filter)
     {
-        var notes = await _noteAppService.GetNotes();
+        var notes = await _noteAppService.GetFiltedNotes(filter);
         if (notes != null)
             return Ok(notes);
         else

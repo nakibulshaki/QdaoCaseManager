@@ -9,6 +9,7 @@ namespace QdaoCaseManager.Data
         public DbSet<Case> Cases { get; set; }
         public DbSet<Note> Notes { get; set; }
 
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
              modelBuilder.Entity<Case>()

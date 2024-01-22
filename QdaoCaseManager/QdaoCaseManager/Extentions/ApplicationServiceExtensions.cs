@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Repositories.Notes;
 using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Services.Email;
 using QdaoCaseManager.Services.Notes;
@@ -12,6 +13,7 @@ public static class ApplicationServiceExtensions
         //DI Register Here
         services.AddScoped<ICaseAppService, CaseAppService>();
         services.AddScoped<INoteAppService, NoteAppService>();
+        services.AddScoped<INoteRepository, NoteRepository>();
 
         return services;
     }

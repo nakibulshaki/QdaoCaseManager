@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\QdaoCaseManager.Shared.csproj" />
     <ProjectReference Include="..\QdaoCaseManager.Client\QdaoCaseManager.Client.csproj" />
+    <PackageReference Include="ADO.Net.Client.Core" Version="1.4.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />

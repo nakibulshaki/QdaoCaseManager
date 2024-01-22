@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Extra;
+using QdaoCaseManager.Repositories.Notes;
+using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 
@@ -8,10 +11,13 @@ namespace QdaoCaseManager.Services.Notes;
 public class NoteAppService : INoteAppService
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly INoteRepository _noteRepository;
 
-    public NoteAppService(ApplicationDbContext dbContext)
+    public NoteAppService(ApplicationDbContext dbContext,
+    INoteRepository noteRepository)
     {
         _dbContext = dbContext;
+        _noteRepository = noteRepository;
     }
     public async Task<Note> CreateNote(Note note)
     {
@@ -22,6 +28,12 @@ public class NoteAppService : INoteAppService
     public async Task<IEnumerable<Note>> GetNotes()
     {
         return await _dbContext.Notes.ToListAsync();
+    }
+    
+    public async Task<PaginatedList<NoteDto>> GetFiltedNotes(FilterNoteDto filter)
+    {
+        var result = await _noteRepository.GetNotesWithPaginationAsync(filter);
+        return result;
     }
 
     public async Task<Note> GetNoteById(int id)
