@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QdaoCaseManager.Shared.Dtos.Cases;
+namespace QdaoCaseManager.Shared.Dtos;
 public class FilterCaseDto: PaginationBase
 {
     public string  QueryString { get; set; }

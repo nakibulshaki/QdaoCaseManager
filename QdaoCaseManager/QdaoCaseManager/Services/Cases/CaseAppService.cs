@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
-using QdaoCaseManager.Shared.Dtos.Cases;
+using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Entites;
 using System.Drawing.Printing;
 
@@ -13,11 +13,16 @@ public class CaseAppService : ICaseAppService
     {
         _dbContext = dbContext;
     }
-    public async Task<Case> CreateCase(Case caseEntry)
+    public async Task CreateCase(CreateUpdateCaseDto createCaseDto)
     {
-        _dbContext.Cases.Add(caseEntry);
+        _dbContext.Cases.Add(new Case
+        {
+            Title = createCaseDto.Title,
+            Description = createCaseDto.Description,
+            Status = createCaseDto.Status,
+            AssignedToUserId = createCaseDto.AssignedToUserId
+        });
         await _dbContext.SaveChangesAsync();
-        return caseEntry;
     }
     public async Task<IEnumerable<CaseDto>> GetCases(FilterCaseDto filterCaseDto)
     {
@@ -58,7 +63,7 @@ public class CaseAppService : ICaseAppService
                     .Select(x => new CaseDto
                     {
                         Id = x.Id,
-                        Title = x.Title,
+                        Title = x.Tittle,
                         Description = x.Description,
                         Status = x.Status,
                         AssignedToUserName = x.AssignedToUser.UserName,
@@ -71,15 +76,15 @@ public class CaseAppService : ICaseAppService
 
         return caseDto;
     }
-    public async Task UpdateCase(int id, CreateUpdateCaseDto updatedCase)
+    public async Task UpdateCase(int id, CreateUpdateCaseDto updatedCaseDto)
     {
         var caseEntry = await _dbContext.Cases.FindAsync(id);
         if (caseEntry is null) throw new NullReferenceException($"Case not found with ID:{id}");
 
-        caseEntry.Title= updatedCase.Title;
-        caseEntry.Description= updatedCase.Description; 
-        caseEntry.Status= updatedCase.Status;
-        caseEntry.AssignedToUserId = updatedCase.AssignedToUserId;
+        caseEntry.Tittle= updatedCaseDto.Title;
+        caseEntry.Description= updatedCaseDto.Description; 
+        caseEntry.Status= updatedCaseDto.Status;
+        caseEntry.AssignedToUserId = updatedCaseDto.AssignedToUserId;
 
         await _dbContext.SaveChangesAsync();
     }
