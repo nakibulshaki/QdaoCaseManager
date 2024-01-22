@@ -1,5 +1,6 @@
 ﻿using Elfie.Serialization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
@@ -129,10 +130,10 @@ public class CaseAppService : ICaseAppService
         _dbContext.Cases.Remove(caseEntry);
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<IList<CaseUserSelectList>> GetCaseUsers()
+    public async Task<IList<SelectListItem>> GetCaseUsers()
     {
         var caseUsers = await _dbContext.Users
-                                        .Select( x => new CaseUserSelectList { 
+                                        .Select( x => new SelectListItem { 
                                             Value = x.Id, 
                                             Text  = x.UserName })
                                         .ToListAsync();

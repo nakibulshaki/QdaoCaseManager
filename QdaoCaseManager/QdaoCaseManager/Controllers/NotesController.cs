@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Services.Notes;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Controllers;
 
@@ -64,7 +66,17 @@ public class NotesController : ControllerBase
         await _noteAppService.DeleteNote(id);
         return NoContent();
     }
+    [HttpGet]
+    [Route("GetCaseSelectListItems")]
+    public async Task<ActionResult<IList<SelectListItem>>> GetNoteCases()
+    {
+        var caseUsers = await _noteAppService.GetNoteCases();
 
+        if (caseUsers != null)
+            return Ok(caseUsers);
+        else
+            return NotFound();
+    }
 
 }
 

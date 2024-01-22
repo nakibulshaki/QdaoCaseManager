@@ -124,7 +124,7 @@
 
         var response = await HttpClient
                             .GetFromJsonAsync<IList<CaseUserSelectList>>(
-                             "api/cases/getCaseUsers");
+                             "api/cases/GetUserSelectListItems");
 
         if (response is not null)
             UserSelectList = response;

@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 
 namespace QdaoCaseManager.Services.Notes;
@@ -49,6 +51,19 @@ public class NoteAppService : INoteAppService
 
         _dbContext.Notes.Remove(note);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<IList<SelectListItem>> GetNoteCases()
+    {
+        var caseUsers = await _dbContext.Cases
+                                        .Select(x => new SelectListItem
+                                        {
+                                            Value = x.Id.ToString(),
+                                            Text = x.Tittle
+                                        })
+                                        .ToListAsync();
+
+        return caseUsers;
     }
 }
 

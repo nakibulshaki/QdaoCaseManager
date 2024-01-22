@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
@@ -68,8 +69,8 @@ public class CasesController : ControllerBase
     }
     [HttpGet]
 
-    [Route("GetCaseUsers")]
-    public async Task<ActionResult<IList<CaseUserSelectList>>> GetCaseUsers()
+    [Route("GetUserSelectListItems")]
+    public async Task<ActionResult<IList<SelectListItem>>> GetCaseUsers()
     {
         var caseUsers = await _caseAppService.GetCaseUsers();
 
