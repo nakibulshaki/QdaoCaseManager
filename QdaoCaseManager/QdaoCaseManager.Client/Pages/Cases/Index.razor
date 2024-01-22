@@ -2,11 +2,127 @@
 @using Microsoft.AspNetCore.Authorization
 @using QdaoCaseManager.Shared.Entites
 @attribute [Authorize]
-@rendermode InteractiveAuto
-
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
+@inject HttpClient HttpClient
 <PageTitle>Case</PageTitle>
 
-<h1>Case</h1>
-<p>This component demonstrates CRUD operation on case data</p>
+<h1>Case Data</h1>
+<p>This component demonstrates CRUD operation on Case data</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <a href='/case/add' class="btn btn-primary" role="button">
+            <i class="fas fa-plus"></i>
+            Add Case
+        </a>
+    </div>
+    <div class="input-group col">
+        <input type="text" class="form-control" placeholder="Search case by title"
+               @bind="searchQuery" @bind:event="oninput" @onkeyup="FilterCases" />
+        @if (searchQuery.Length > 0)
+        {
+            <div class="input-group-append">
+                <button class="btn btn-danger" @onclick="ResetSearch">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        }
+    </div>
+</div>
+<br />
+
+@if (cases == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped align-middle table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var caseItem in cases)
+            {
+                <tr>
+                    <td>@caseItem.Id</td>
+                    <td>@caseItem.Title</td>
+                    <td>@caseItem.Description</td>
+                    <td>@caseItem.Status</td>
+                    <td>@caseItem.AssignedToUser?.UserName</td>
+                    <td>
+                        <a href='/case/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
+                            Edit
+                        </a>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCaseModal"
+                                @onclick="(() => DeleteCase(caseItem.Id))">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="deleteCaseModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal content for case deletion confirmation -->
+            </div>
+        </div>
+    </div>
+}
 @code {
+
+    private List<Case> cases = new();
+    private List<Case> filteredCases = new();
+    private Case selectedCase = new();
+    private string searchQuery = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCase();
+    }
+
+    private async Task LoadCase()
+    {
+        cases = await HttpClient.GetFromJsonAsync<List<Case>>("api/case");
+        UpdateFilteredCases();
+    }
+
+    private void UpdateFilteredCases()
+    {
+        filteredCases = string.IsNullOrWhiteSpace(searchQuery)
+            ? cases
+            : cases.Where(x => x.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    protected void FilterCases()
+    {
+        UpdateFilteredCases();
+    }
+
+    protected void ConfirmDeletion(int caseId)
+    {
+        selectedCase = cases.FirstOrDefault(x => x.Id == caseId);
+    }
+
+    protected async Task DeleteCase(int caseId)
+    {
+        await HttpClient.DeleteAsync($"api/case/{caseId}");
+        await LoadCase();
+    }
+
+    public void ResetSearch()
+    {
+        searchQuery = string.Empty;
+        UpdateFilteredCases();
+    }
 }

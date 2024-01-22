@@ -1,5 +1,85 @@
-﻿<h3>AddEditCase</h3>
+﻿﻿
+@page "/case/add"
+@page "/case/edit/{id:int}"
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@if(Id == null)
+{
+    <h3>Crate Game</h3>
+    <PageTitle>Crate Game</PageTitle>
+}
+else
+{
+    <h3>Edit @Case.Title</h3>
+    <PageTitle>Edit Game</PageTitle>
 
+}
+
+<EditForm Model="@Case" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="Case.Title" class="form-label">Tittle</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="Case.Title" />
+        </div>
+        <ValidationMessage For="@(() => Case.Title)" />
+    </div>
+    <div class="mb-3">
+        <label for="Case.Description" class="form-label">Description</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="Case.Description" />
+        </div>
+        <ValidationMessage For="@(() => Case.Description)" />
+    </div>
+    <div class="mb-3">
+        <label for="Status" class="form-label">Status</label>
+        <div class="col-md-4">
+            <InputSelect class="form-control" @bind-Value="Case.Status">
+                <option value="">-- Select Status --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </InputSelect>
+        </div>
+        <ValidationMessage For="@(() => Case.Status)" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+    </div>
+</EditForm>
 @code {
+    [Parameter]
+    public int? Id { get; set; }
+    public Case Case { get; set; } = new ();
+    public IDictionary<int, string> UserSelectList = new Dictionary<int, string>();
+    public IDictionary<int, string> CaseStausSelectList = new Dictionary<int, string>();
 
+    protected override async Task OnParametersSetAsync()
+    {
+        if(Id is not null)
+        {
+            var result = await Http.GetFromJsonAsync<Case>($"api/cases/{(int)Id}");
+            if (result is not null) Case = result;
+        }
+       
+    }
+    protected async Task HandleSubmit()
+    {
+        if (Id is not null) 
+            await Http.PutAsJsonAsync($"api/cases/{Id}", Case);
+        else
+            await Http.PostAsJsonAsync("api/cases", Case);
+
+         HandleCancel();
+    }
+    protected async Task GetUserSelectList()
+    {
+        var result = await Http.GetFromJsonAsync<List<UserSelectList>>("api/Employee/GetCityList");
+        UserSelectList = 
+    }
+    protected void HandleCancel()
+    {
+        NavigationManager.NavigateTo("/case");
+    }
 }
