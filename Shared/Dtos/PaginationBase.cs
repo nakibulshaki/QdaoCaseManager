@@ -8,7 +8,6 @@ namespace QdaoCaseManager.Shared.Dtos;
 public class PaginationBase
 {
     public int CurrentPage { get; set; }
-    public int TotalItems { get; set; }
     public int PageSize { get; set; }
 }
 
