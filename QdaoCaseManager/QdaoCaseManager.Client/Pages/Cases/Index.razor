@@ -4,6 +4,7 @@
 @using QdaoCaseManager.Extra
 @using QdaoCaseManager.Shared
 @using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.Shared.Dtos.Cases
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
@@ -24,22 +25,29 @@
                     Add
                 </a>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search case by Tittle"
                        @bind="filter.SearchString" @bind:event="oninput" @onkeyup="LoadCases" />
             </div>
            
-            <div class="col-md-5 ">
-               
-               
+            <div class="col-md-3 ">
                 <select class="form-control" @bind="filter.Status" @bind:event="oninput" @onchange="LoadCases">
+                    <option value="null">Select Status</option>
                     @foreach (var status in Enum.GetValues<CaseStatus>())
                     {
                         <option value="@status"><span>@status.ToString()</span></option>
                     }
                 </select>
             </div>
-           
+            <div class="col-md-3 ">
+                <select class="form-control" @bind="filter.AssignedToUserId" @bind:event="oninput" @onchange="LoadCases">
+                    <option value="null">Select Assigned User</option>
+                    @foreach (var user in UserSelectList)
+                    {
+                        <option value="@user.Value">@user.Text</option>
+                    }
+                </select>
+            </div>
         </div>
     </div>
 </div>
@@ -58,6 +66,7 @@ else
                 <th>Description</th>
                 <th>Status</th>
                 <th>Assigned To</th>
+                <th>Created</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -74,12 +83,13 @@ else
                         </span>
                     </td>
                     <td>@caseItem.AssignedToUserName</td>
+                    <td>@caseItem.CreateDate</td>
                     <td>
                         <a href='/case/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
                             Edit
                         </a>
-                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCaseModal"
-                                @onclick="(() => DeleteCase(caseItem.Id))">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal" 
+                        @onclick="(() => OpenDeleteModal(caseItem.Id))">
                             Delete
                         </button>
                     </td>
@@ -87,22 +97,10 @@ else
             }
         </tbody>
     </table>
-    <Pagination PageIndex="@Cases.PageIndex" TotalCount="@Cases.TotalCount" PageSize="@filter.PageSize" OnPageChanged="@OnPageChanged" />
-
-    <div class="modal fade" id="deleteCaseModal" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this case?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+    <Pagination PageIndex="@Cases.PageIndex" TotalCount="@Cases.TotalCount" PageSize="@filter.PageSize"  OnPageChanged="@OnPageChanged" />
+   <!-- Import the DeleteConfirmation component -->
+    <Confirmation Title="Delete Confirmation" Message="Are you sure you want to delete?" OnConfirmDelete="DeleteCase"  />
+  }
 @code {
     private PaginatedList<CaseDto> Cases { get; set; } = new PaginatedList<CaseDto>(new List<CaseDto>(), 1, 10, 0);
     private FilterCaseDto filter { get; set; } = new FilterCaseDto
@@ -110,11 +108,13 @@ else
             CurrentPage = 1,
             PageSize = 10
         };
+    public IList<CaseUserSelectList> UserSelectList = new List<CaseUserSelectList>();
     private bool isLoading = false;
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
         await LoadCases();
+        await LoadCaseUserSelectList();
         isLoading = false;
     }
 
@@ -142,11 +142,6 @@ else
         await LoadCases();
     }
 
-    protected async Task DeleteCase(int caseId)
-    {
-        await HttpClient.DeleteAsync($"api/case/{caseId}");
-        await LoadCases();
-    }
     private string GetStatusColorClass(CaseStatus status)
     {
         return status switch
@@ -160,5 +155,29 @@ else
             _ => "badge bg-secondary text-white",
         };
     }
+    protected async Task LoadCaseUserSelectList()
+    {
+        var response = await HttpClient
+                            .GetFromJsonAsync<IList<CaseUserSelectList>>(
+                             "api/cases/getCaseUsers");
 
+        if (response is not null)
+            UserSelectList = response;
+        else
+            throw new Exception($"Something went wrong while getting case user data.");
+    }
+
+    private int selectedCaseId = 0;
+
+    private void OpenDeleteModal(int caseId)
+    {
+        selectedCaseId = caseId;
+    }
+
+    private async Task DeleteCase()
+    {
+        await HttpClient.DeleteAsync($"api/cases/{selectedCaseId}");
+        await LoadCases();
+    }
+   
 }

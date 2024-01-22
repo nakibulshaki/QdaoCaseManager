@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager", "QdaoCase
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Client", "QdaoCaseManager\QdaoCaseManager.Client\QdaoCaseManager.Client.csproj", "{565224BB-FD3C-4ED8-9D2E-726A7CC82040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QdaoCaseManager.Shared", "Shared\QdaoCaseManager.Shared.csproj", "{AF69934D-1221-46DA-817C-1DB616B45DAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Shared", "Shared\QdaoCaseManager.Shared.csproj", "{AF69934D-1221-46DA-817C-1DB616B45DAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
