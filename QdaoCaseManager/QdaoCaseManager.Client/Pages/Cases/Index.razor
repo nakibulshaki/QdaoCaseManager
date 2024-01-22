@@ -2,29 +2,47 @@
 @using Microsoft.AspNetCore.Authorization
 @using QdaoCaseManager.Client.Shared
 @using QdaoCaseManager.Extra
+@using QdaoCaseManager.Shared
 @using QdaoCaseManager.Shared.Dtos
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
 <PageTitle>Case</PageTitle>
 
-<h1>Case Data</h1>
-<p>This component demonstrates CRUD operation on Case data</p>
-
-<div class="row">
-    <div class="col-md-6">
-        <a href='/case/add' class="btn btn-primary" role="button">
-            <i class="fas fa-plus"></i>
-            Add Case
-        </a>
+<div class="card mb-3">
+    <div class="card-header">
+        <h3>Case Data</h3>
+        <p>This component demonstrates CRUD operation on Case data</p>
     </div>
-    <div class="input-group col">
-        <input type="text" class="form-control" placeholder="Search case by Tittle"
-               @bind="filter.SearchString" @bind:event="oninput" @onkeyup="LoadCases" />
-
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <a href='/case/add' class="btn btn-outline-primary" role="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                    </svg>
+                    Add
+                </a>
+            </div>
+            <div class="col-md-5">
+                <input type="text" class="form-control" placeholder="Search case by Tittle"
+                       @bind="filter.SearchString" @bind:event="oninput" @onkeyup="LoadCases" />
+            </div>
+           
+            <div class="col-md-5 ">
+               
+               
+                <select class="form-control" @bind="filter.Status" @bind:event="oninput" @onchange="LoadCases">
+                    @foreach (var status in Enum.GetValues<CaseStatus>())
+                    {
+                        <option value="@status"><span>@status.ToString()</span></option>
+                    }
+                </select>
+            </div>
+           
+        </div>
     </div>
 </div>
-<br />
 
 @if (Cases == null)
 {
@@ -32,8 +50,8 @@
 }
 else
 {
-    <table class="table table-striped align-middle table-bordered">
-        <thead class="table-success">
+    <table class="table table-responsive">
+        <thead class="table-group-divider">
             <tr>
                 <th>ID</th>
                 <th>Title</th>
@@ -50,7 +68,11 @@ else
                     <td>@caseItem.Id</td>
                     <td>@caseItem.Tittle</td>
                     <td>@caseItem.Description</td>
-                    <td>@caseItem.StatusString</td>
+                    <td>
+                        <span class="@GetStatusColorClass(caseItem.Status)">
+                            @caseItem.StatusString
+                        </span>
+                    </td>
                     <td>@caseItem.AssignedToUserName</td>
                     <td>
                         <a href='/case/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
@@ -100,6 +122,7 @@ else
     {
         var apiUrl = "api/cases?" +
           $"SearchString={filter.SearchString}&" +
+          $"Status={filter.Status}&" +
           $"CreateFrom={filter.CreateFrom?.ToString("yyyy-MM-dd")}&" +
           $"CreateTo={filter.CreateTo?.ToString("yyyy-MM-dd")}&" +
           $"AssignedToUserId={filter.AssignedToUserId}&" +
@@ -107,11 +130,11 @@ else
           $"PageSize={filter.PageSize}";
 
 
-            var response = await HttpClient.GetFromJsonAsync<PaginatedList<CaseDto>>(apiUrl);
-            if (response is not null)
-                Cases = response;
-            else
-                throw new Exception($"Something went wrong while getting data with : {apiUrl}");
+        var response = await HttpClient.GetFromJsonAsync<PaginatedList<CaseDto>>(apiUrl);
+        if (response is not null)
+            Cases = response;
+        else
+            throw new Exception($"Something went wrong while getting data with : {apiUrl}");
     }
     protected async Task OnPageChanged(int newPage)
     {
@@ -124,6 +147,18 @@ else
         await HttpClient.DeleteAsync($"api/case/{caseId}");
         await LoadCases();
     }
-
+    private string GetStatusColorClass(CaseStatus status)
+    {
+        return status switch
+        {
+            CaseStatus.Open => "badge bg-info text-dark",
+            CaseStatus.Pending => "badge bg-warning text-dark",
+            CaseStatus.Assigned => "badge bg-primary text-white",
+            CaseStatus.InReview => "badge bg-secondary text-white",
+            CaseStatus.Resolved => "badge bg-success text-white",
+            CaseStatus.Closed => "badge bg-danger text-white",
+            _ => "badge bg-secondary text-white",
+        };
+    }
 
 }

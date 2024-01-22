@@ -1,9 +1,11 @@
 ﻿using Elfie.Serialization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 using System.Drawing.Printing;
 
@@ -11,7 +13,6 @@ namespace QdaoCaseManager.Services.Cases;
 public class CaseAppService : ICaseAppService
 {
     private readonly ApplicationDbContext _dbContext;
-
     public CaseAppService(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -38,6 +39,9 @@ public class CaseAppService : ICaseAppService
 
         if (filterCaseDto.AssignedToUserId is not null)
             query = query.Where(x => x.AssignedToUserId == filterCaseDto.AssignedToUserId);
+
+        if (filterCaseDto.Status is not null)
+            query = query.Where(x => x.Status == filterCaseDto.Status);
 
         if (filterCaseDto.CreateFrom is not null)
             query.Where(x => x.CreateDate >= filterCaseDto.CreateFrom);
@@ -70,6 +74,7 @@ public class CaseAppService : ICaseAppService
     public async Task<CaseDto> GetCaseById(int id)
     {
         var caseDto = await _dbContext.Cases
+                    .Where(x => x.Id == id)
                     .Select(x => new CaseDto
                     {
                         Id = x.Id,
@@ -83,6 +88,24 @@ public class CaseAppService : ICaseAppService
 
         if(caseDto is null)
           throw new NullReferenceException($"Case not found with ID:{id}");
+
+        return caseDto;
+    }
+    public async Task<CreateUpdateCaseDto> GetUpdateCaseById(int id)
+    {
+        var caseDto = await _dbContext.Cases
+                    .Where(x => x.Id == id)
+                    .Select(x => new CreateUpdateCaseDto
+                    {
+                        Id = x.Id,
+                        Tittle = x.Tittle,
+                        Description = x.Description,
+                        Status = x.Status,
+                        AssignedToUserId = x.AssignedToUserId,
+                    }).FirstOrDefaultAsync();
+
+        if (caseDto is null)
+            throw new NullReferenceException($"Case not found with ID:{id}");
 
         return caseDto;
     }
@@ -105,6 +128,16 @@ public class CaseAppService : ICaseAppService
 
         _dbContext.Cases.Remove(caseEntry);
         await _dbContext.SaveChangesAsync();
+    }
+    public async Task<IList<CaseUserSelectList>> GetCaseUsers()
+    {
+        var caseUsers = await _dbContext.Users
+                                        .Select( x => new CaseUserSelectList { 
+                                            Value = x.Id, 
+                                            Text  = x.UserName })
+                                        .ToListAsync();
+
+        return caseUsers;
     }
 }
 

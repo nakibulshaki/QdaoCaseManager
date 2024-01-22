@@ -11,5 +11,6 @@ public class FilterCaseDto: PaginationBase
     public DateTime? CreateFrom { get; set; }
     public DateTime? CreateTo { get; set; }
     public string? AssignedToUserId { get; set; }
+    public CaseStatus? Status { get; set; }
 
 }

@@ -10,6 +10,7 @@ using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Shared.Dtos;
+using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Controllers;
 
@@ -64,6 +65,27 @@ public class CasesController : ControllerBase
     {
         await _caseAppService.DeleteCase(id);
         return NoContent();
+    }
+    [HttpGet]
+
+    [Route("GetCaseUsers")]
+    public async Task<ActionResult<IList<CaseUserSelectList>>> GetCaseUsers()
+    {
+        var caseUsers = await _caseAppService.GetCaseUsers();
+
+        if (caseUsers != null)
+            return Ok(caseUsers);
+        else
+            return NotFound();
+    }
+    [HttpGet("GetUpdateCase/{id}")]
+    public async Task<ActionResult<CreateUpdateCaseDto>> GetUpdateCaseById(int id)
+    {
+        CreateUpdateCaseDto caseEntry = await _caseAppService.GetUpdateCaseById(id);
+        if (caseEntry == null)
+            return NotFound();
+
+        return caseEntry;
     }
 }
 
