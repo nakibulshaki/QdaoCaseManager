@@ -1,19 +1,19 @@
 ﻿@using System.Linq
-
+@using Microsoft.AspNetCore.Components
 <div class="pagination">
     @if (Page > 1)
     {
-        <button class="page-item" @onclick="() => OnPageChanged(Page - 1)">Previous</button>
+        <button class="page-item" @onclick="() => OnPageChanged.InvokeAsync(Page - 1)">Previous</button>
     }
 
     @for (int i = 1; i <= PagesCount; i++)
     {
-        <button class="page-item @(i == Page ? "active" : "")" @onclick="() => OnPageChanged(i)">@i</button>
+        <button class="page-item @(i == Page ? "active" : "")" @onclick="() => OnPageChanged.InvokeAsync(i)">@i</button>
     }
 
     @if (Page < PagesCount)
     {
-        <button class="page-item" @onclick="() => OnPageChanged(Page + 1)">Next</button>
+        <button class="page-item" @onclick="() => OnPageChanged.InvokeAsync(Page + 1)">Next</button>
     }
 </div>
 

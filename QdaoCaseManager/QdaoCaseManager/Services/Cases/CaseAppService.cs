@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Shared.Entites;
 using System.Drawing.Printing;
@@ -17,7 +18,7 @@ public class CaseAppService : ICaseAppService
     {
         _dbContext.Cases.Add(new Case
         {
-            Title = createCaseDto.Title,
+            Tittle = createCaseDto.Tittle,
             Description = createCaseDto.Description,
             Status = createCaseDto.Status,
             AssignedToUserId = createCaseDto.AssignedToUserId
@@ -29,7 +30,7 @@ public class CaseAppService : ICaseAppService
         var query =  _dbContext.Cases.AsQueryable();
 
         if(!String.IsNullOrWhiteSpace(filterCaseDto.QueryString)) {
-            query = query.Where(x => x.Title.Contains(filterCaseDto.QueryString) ||
+            query = query.Where(x => x.Tittle.Contains(filterCaseDto.QueryString) ||
                                      x.Description.Contains(filterCaseDto.QueryString));
         }
 
@@ -47,7 +48,7 @@ public class CaseAppService : ICaseAppService
                         .Take(filterCaseDto.PageSize)
                         .Select(x=> new CaseDto { 
                             Id = x.Id,
-                            Title= x.Title,
+                            Tittle= x.Tittle,
                             Description = x.Description,
                             Status = x.Status,
                             AssignedToUserName = x.AssignedToUser.UserName,
@@ -63,7 +64,7 @@ public class CaseAppService : ICaseAppService
                     .Select(x => new CaseDto
                     {
                         Id = x.Id,
-                        Title = x.Tittle,
+                        Tittle = x.Tittle,
                         Description = x.Description,
                         Status = x.Status,
                         AssignedToUserName = x.AssignedToUser.UserName,
@@ -81,7 +82,7 @@ public class CaseAppService : ICaseAppService
         var caseEntry = await _dbContext.Cases.FindAsync(id);
         if (caseEntry is null) throw new NullReferenceException($"Case not found with ID:{id}");
 
-        caseEntry.Tittle= updatedCaseDto.Title;
+        caseEntry.Tittle= updatedCaseDto.Tittle;
         caseEntry.Description= updatedCaseDto.Description; 
         caseEntry.Status= updatedCaseDto.Status;
         caseEntry.AssignedToUserId = updatedCaseDto.AssignedToUserId;
