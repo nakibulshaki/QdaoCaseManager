@@ -76,7 +76,7 @@
         await LoadNoteCaseSelectList();
         if (Id is not null)
         {
-            var result = await HttpClient.GetFromJsonAsync<CreateUpdateNoteDto>($"api/cases/GetUpdateCase/{(int)Id}");
+            var result = await HttpClient.GetFromJsonAsync<CreateUpdateNoteDto>($"api/notes/{(int)Id}");
             if (result is not null) NoteDto = result;
         }
 
