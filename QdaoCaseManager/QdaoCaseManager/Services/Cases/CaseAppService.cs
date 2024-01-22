@@ -6,7 +6,6 @@ using QdaoCaseManager.Data;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 using System.Drawing.Printing;
 

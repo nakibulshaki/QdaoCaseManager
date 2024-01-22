@@ -4,7 +4,6 @@
 @using QdaoCaseManager.Extra
 @using QdaoCaseManager.Shared
 @using QdaoCaseManager.Shared.Dtos
-@using QdaoCaseManager.Shared.Dtos.Cases
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
@@ -108,7 +107,7 @@ else
             CurrentPage = 1,
             PageSize = 10
         };
-    public IList<CaseUserSelectList> UserSelectList = new List<CaseUserSelectList>();
+    public IList<SelectItem> UserSelectList = new List<SelectItem>();
     private bool isLoading = false;
     protected override async Task OnInitializedAsync()
     {
@@ -158,7 +157,7 @@ else
     protected async Task LoadCaseUserSelectList()
     {
         var response = await HttpClient
-                            .GetFromJsonAsync<IList<CaseUserSelectList>>(
+                            .GetFromJsonAsync<IList<SelectItem>>(
                              "api/cases/GetUserSelectListItems");
 
         if (response is not null)

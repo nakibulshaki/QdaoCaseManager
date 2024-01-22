@@ -1,33 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Repositories.Notes;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 
 namespace QdaoCaseManager.Services.Notes;
 public class NoteAppService : INoteAppService
 {
-    private readonly ApplicationDbContext _dbContext;
     private readonly INoteRepository _noteRepository;
-
-    public NoteAppService(ApplicationDbContext dbContext,
-    INoteRepository noteRepository)
+    private readonly ApplicationDbContext _dbContext;
+    public NoteAppService(INoteRepository noteRepository,
+           ApplicationDbContext dbContext)
     {
-        _dbContext = dbContext;
         _noteRepository = noteRepository;
+        _dbContext = dbContext;
     }
-    public async Task<Note> CreateNote(Note note)
+    public async Task CreateNote(CreateUpdateNoteDto note)
     {
-        _dbContext.Notes.Add(note);
-        await _dbContext.SaveChangesAsync();
-        return note;
-    }
-    public async Task<IEnumerable<Note>> GetNotes()
-    {
-        return await _dbContext.Notes.ToListAsync();
+       await _noteRepository.CreateNote(note);
     }
     
     public async Task<PaginatedList<NoteDto>> GetFiltedNotes(FilterNoteDto filter)
@@ -36,33 +29,22 @@ public class NoteAppService : INoteAppService
         return result;
     }
 
-    public async Task<Note> GetNoteById(int id)
+    public async Task<CreateUpdateNoteDto> GetNoteById(int id)
     {
-        var note = await _dbContext.Notes.FindAsync(id);
+        var note = await _noteRepository.GetNoteByIdAsync(id);
         return note;
     }
-    public async Task<Note> UpdateNote(int id, Note updatedNote)
+    public async Task UpdateNote(int id, CreateUpdateNoteDto noteDto)
     {
-        var note = await GetNoteById(id);
-        if (note == null)
-        {
+        var result = await _noteRepository.UpdateNoteAsync(noteDto);
+        if (!result)
             throw new InvalidOperationException("Note not found");
-        }
-
-        _dbContext.Entry(note).CurrentValues.SetValues(updatedNote);
-        await _dbContext.SaveChangesAsync();
-        return note;
     }
     public async Task DeleteNote(int id)
     {
-        var note = await GetNoteById(id);
-        if (note == null)
-        {
+        var result = await _noteRepository.DeleteNoteAsync(id);
+        if (!result)
             throw new InvalidOperationException("Note not found");
-        }
-
-        _dbContext.Notes.Remove(note);
-        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<IList<SelectListItem>> GetNoteCases()

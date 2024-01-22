@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Data;
+using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Notes;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Controllers;
 
@@ -36,7 +36,7 @@ public class NotesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Note>> GetNote(int id)
+    public async Task<ActionResult<CreateUpdateNoteDto>> GetNote(int id)
     {
         var note = await _noteAppService.GetNoteById(id);
 
@@ -49,14 +49,14 @@ public class NotesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutNote(int id, Note note)
+    public async Task<IActionResult> PutNote(int id, CreateUpdateNoteDto note)
     {
         await _noteAppService.UpdateNote(id, note);
         return NoContent();
     }
 
     [HttpPost]
-    public async Task<ActionResult<Note>> PostNote(Note note)
+    public async Task<ActionResult<Note>> PostNote(CreateUpdateNoteDto note)
     {
         await _noteAppService.CreateNote(note);
         return CreatedAtAction("GetNote", new { id = note.Id }, note);

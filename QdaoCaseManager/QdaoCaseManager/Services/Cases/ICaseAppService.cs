@@ -2,7 +2,6 @@
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Dtos.Cases;
 using QdaoCaseManager.Shared.Entites;
 namespace QdaoCaseManager.Services.Cases;
 public interface ICaseAppService

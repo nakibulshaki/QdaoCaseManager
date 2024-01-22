@@ -2,8 +2,7 @@
 @page "/note/add"
 @page "/note/edit/{id:int}"
 @using QdaoCaseManager.Dtos
-@using QdaoCaseManager.Shared
-@using QdaoCaseManager.Shared.Dtos.Cases
+@using QdaoCaseManager.Shared.Dtos
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -14,71 +13,52 @@
             <div class="card-header">
                 @if (Id == null)
                 {
-                    <h3>Create Case</h3>
-                    <PageTitle>Create  Case</PageTitle>
+                    <h3>Create Note</h3>
+                    <PageTitle>Create  Note</PageTitle>
                 }
                 else
                 {
-                    <h3>Edit Case</h3>
-                    <PageTitle>Create Case </PageTitle>
+                    <h3>Edit Note</h3>
+                    <PageTitle>Create Note </PageTitle>
 
                 }
             </div>
-            <EditForm  Model="@CaseDto" OnValidSubmit="HandleSubmit">
+            <EditForm Model="@NoteDto" OnValidSubmit="HandleSubmit">
 
-            <div class="card-body">
+                <div class="card-body">
                     <div class="row">
-                    <DataAnnotationsValidator />
-                    <div class="col-md-12">
-                        <label for="CaseDto.Tittle" class="form-label">Tittle</label>
-                        <div class="">
-                            <InputText class="form-control" @bind-Value="CaseDto.Tittle" />
+                        <DataAnnotationsValidator />
+                        <div class="col-md-12">
+                            <label for="NoteDto.Tittle" class="form-label">Content</label>
+                            <div class="">
+                                <InputTextArea class="form-control" @bind-Value="@NoteDto.Content" />
+                            </div>
+                            <ValidationMessage For="@(() => NoteDto.Content)" />
                         </div>
-                        <ValidationMessage For="@(() => CaseDto.Tittle)" />
-                    </div>
-                    <div class="mb-3 col-md-12">
-                        <label for="CaseDto.Description" class="form-label">Description</label>
-                        <div class="">
-                            <InputTextArea  class="form-control" @bind-Value="CaseDto.Description" />
+                        <div class="col-md-12 mb-3">
+                            <label for="CaseId" class="form-label">Case</label>
+                            <div class="">
+                                <InputSelect class="form-control" id="AssignedToUserId" @bind-Value="@NoteDto.CaseId">
+                                    <option value="null">Select Case</option>
+                                    @foreach (var user in CaseSelectList)
+                                    {
+                                        <option value="@user.Value">@user.Text</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <ValidationMessage For="@(() => NoteDto.CaseId)" />
                         </div>
-                        <ValidationMessage For="@(() => CaseDto.Description)" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="Status" class="form-label">Status</label>
-                        <div class="">
-                            <InputSelect class="form-control" @bind-Value="CaseDto.Status">
-                                @foreach (var status in Enum.GetValues<CaseStatus>())
-                                {
-                                    <option value="@status">@status.ToString()</option>
-                                }
-                            </InputSelect>
-                        </div>
-                        <ValidationMessage For="@(() => CaseDto.Status)" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="AssignedToUserId" class="form-label">Assigned User</label>
-                        <div class="">
-                            <InputSelect class="form-control" id="AssignedToUserId" @bind-Value="CaseDto.AssignedToUserId">
-                                <option value="null">Select Assigned User</option>
-                                @foreach (var user in UserSelectList)
-                                {
-                                    <option value="@user.Value">@user.Text</option>
-                                }
-                            </InputSelect>
-                        </div>
-                        <ValidationMessage For="@(() => CaseDto.AssignedToUserId)" />
-                    </div>
-                   
-                    </div>
-                
 
-            </div>
-            <div class="card-footer float-right">
-                <div class="form-group float-end">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+                    </div>
+
+
                 </div>
-            </div>
+                <div class="card-footer float-right">
+                    <div class="form-group float-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-light" @onclick="HandleCancel">Cancel</button>
+                    </div>
+                </div>
             </EditForm>
         </div>
     </div>
@@ -87,17 +67,17 @@
 @code {
     [Parameter]
     public int? Id { get; set; }
-    public CreateUpdateCaseDto CaseDto { get; set; } = new();
+    public CreateUpdateNoteDto NoteDto { get; set; } = new();
 
-    public IList<CaseUserSelectList> UserSelectList = new List<CaseUserSelectList>();
+    public IList<SelectItem> CaseSelectList = new List<SelectItem>();
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadCaseUserSelectList();
-        if(Id is not null)
+        await LoadNoteCaseSelectList();
+        if (Id is not null)
         {
-            var result = await HttpClient.GetFromJsonAsync<CreateUpdateCaseDto>($"api/cases/GetUpdateCase/{(int)Id}");
-            if (result is not null) CaseDto = result;
+            var result = await HttpClient.GetFromJsonAsync<CreateUpdateNoteDto>($"api/cases/GetUpdateCase/{(int)Id}");
+            if (result is not null) NoteDto = result;
         }
 
     }
@@ -105,29 +85,29 @@
     {
         if (Id is not null)
         {
-            await HttpClient.PutAsJsonAsync($"api/cases/{Id}", CaseDto);
+            await HttpClient.PutAsJsonAsync($"api/notes/{Id}", NoteDto);
 
         }
-        else{
-            await HttpClient.PostAsJsonAsync("api/cases", CaseDto);
+        else
+        {
+            await HttpClient.PostAsJsonAsync("api/notes", NoteDto);
 
         }
-        NavigationManager.NavigateTo("/case");
+        NavigationManager.NavigateTo("/note");
     }
 
     protected async Task HandleCancel()
     {
-        NavigationManager.NavigateTo("/case");
+        NavigationManager.NavigateTo("/note");
     }
-    protected async Task LoadCaseUserSelectList()
+    protected async Task LoadNoteCaseSelectList()
     {
-
         var response = await HttpClient
-                            .GetFromJsonAsync<IList<CaseUserSelectList>>(
-                             "api/cases/GetUserSelectListItems");
+                            .GetFromJsonAsync<IList<SelectItem>>(
+                             "api/notes/getCaseSelectListItems");
 
         if (response is not null)
-            UserSelectList = response;
+            CaseSelectList = response;
         else
             throw new Exception($"Something went wrong while getting case user data.");
     }
