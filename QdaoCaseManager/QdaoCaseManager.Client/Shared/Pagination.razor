@@ -1,0 +1,27 @@
+﻿@using System.Linq
+
+<div class="pagination">
+    @if (Page > 1)
+    {
+        <button class="page-item" @onclick="() => OnPageChanged(Page - 1)">Previous</button>
+    }
+
+    @for (int i = 1; i <= PagesCount; i++)
+    {
+        <button class="page-item @(i == Page ? "active" : "")" @onclick="() => OnPageChanged(i)">@i</button>
+    }
+
+    @if (Page < PagesCount)
+    {
+        <button class="page-item" @onclick="() => OnPageChanged(Page + 1)">Next</button>
+    }
+</div>
+
+@code {
+    [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public int TotalItems { get; set; }
+    [Parameter] public int PageSize { get; set; } = 10;
+    [Parameter] public EventCallback<int> OnPageChanged { get; set; }
+
+    private int PagesCount => (int)Math.Ceiling((double)TotalItems / PageSize);
+}
