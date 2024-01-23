@@ -45,6 +45,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
+//Register Exception Handler Service
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // Application Services Register
 builder.Services.AddApplicationServices();
@@ -63,7 +66,7 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 
 // Global Exception Handler
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
