@@ -50,8 +50,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddApplicationServices();
 
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
-
+//Enable when you have access
+//builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 // Swagger
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
