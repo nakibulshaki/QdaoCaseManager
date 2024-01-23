@@ -19,46 +19,7 @@ public class NoteRepository : INoteRepository
     {
         _config = config;
     }
-    //public JsonResult AjaxMethod(int pageIndex, string searchTerm)
-    //{
-    //    CustomerModel model = new CustomerModel();
-    //    model.SearchTerm = searchTerm;
-    //    model.PageIndex = pageIndex;
-    //    model.PageSize = 10;
-
-    //    List<Customer> customers = new List<Customer>();
-    //    string constring = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-    //    using (SqlConnection con = new SqlConnection(constring))
-    //    {
-    //        using (SqlCommand cmd = new SqlCommand("GetCustomersPageWise", con))
-    //        {
-    //            cmd.CommandType = CommandType.StoredProcedure;
-    //            cmd.Parameters.AddWithValue("@SearchTerm", model.SearchTerm);
-    //            cmd.Parameters.AddWithValue("@PageIndex", model.PageIndex);
-    //            cmd.Parameters.AddWithValue("@PageSize", model.PageSize);
-    //            cmd.Parameters.Add("@RecordCount", SqlDbType.VarChar, 30);
-    //            cmd.Parameters["@RecordCount"].Direction = ParameterDirection.Output;
-    //            con.Open();
-    //            SqlDataReader sdr = cmd.ExecuteReader();
-    //            while (sdr.Read())
-    //            {
-    //                customers.Add(new Customer
-    //                {
-    //                    CustomerID = sdr["CustomerID"].ToString(),
-    //                    ContactName = sdr["ContactName"].ToString(),
-    //                    City = sdr["City"].ToString(),
-    //                    Country = sdr["Country"].ToString()
-    //                });
-    //            }
-    //            con.Close();
-
-    //            model.Customers = customers;
-    //            model.RecordCount = Convert.ToInt32(cmd.Parameters["@RecordCount"].Value);
-    //        }
-    //    }
-
-    //    return Json(model);
-    //}
+  
     public async Task<PaginatedList<NoteDto>> GetNotesWithPaginationAsync(FilterNoteDto filterNoteDto)
     {
 
