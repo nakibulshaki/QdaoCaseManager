@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Data.SqlClient;
 using NuGet.Versioning;
@@ -17,10 +19,48 @@ public class NoteRepository : INoteRepository
     {
         _config = config;
     }
+    //public JsonResult AjaxMethod(int pageIndex, string searchTerm)
+    //{
+    //    CustomerModel model = new CustomerModel();
+    //    model.SearchTerm = searchTerm;
+    //    model.PageIndex = pageIndex;
+    //    model.PageSize = 10;
 
+    //    List<Customer> customers = new List<Customer>();
+    //    string constring = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+    //    using (SqlConnection con = new SqlConnection(constring))
+    //    {
+    //        using (SqlCommand cmd = new SqlCommand("GetCustomersPageWise", con))
+    //        {
+    //            cmd.CommandType = CommandType.StoredProcedure;
+    //            cmd.Parameters.AddWithValue("@SearchTerm", model.SearchTerm);
+    //            cmd.Parameters.AddWithValue("@PageIndex", model.PageIndex);
+    //            cmd.Parameters.AddWithValue("@PageSize", model.PageSize);
+    //            cmd.Parameters.Add("@RecordCount", SqlDbType.VarChar, 30);
+    //            cmd.Parameters["@RecordCount"].Direction = ParameterDirection.Output;
+    //            con.Open();
+    //            SqlDataReader sdr = cmd.ExecuteReader();
+    //            while (sdr.Read())
+    //            {
+    //                customers.Add(new Customer
+    //                {
+    //                    CustomerID = sdr["CustomerID"].ToString(),
+    //                    ContactName = sdr["ContactName"].ToString(),
+    //                    City = sdr["City"].ToString(),
+    //                    Country = sdr["Country"].ToString()
+    //                });
+    //            }
+    //            con.Close();
+
+    //            model.Customers = customers;
+    //            model.RecordCount = Convert.ToInt32(cmd.Parameters["@RecordCount"].Value);
+    //        }
+    //    }
+
+    //    return Json(model);
+    //}
     public async Task<PaginatedList<NoteDto>> GetNotesWithPaginationAsync(FilterNoteDto filterNoteDto)
     {
-        int totalCount = 0;
 
         using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
         {
@@ -28,10 +68,9 @@ public class NoteRepository : INoteRepository
 
             using (var command = new SqlCommand("GetNotesWithPagination", connection))
             {
-                var totalCountParam = new SqlParameter("@TotalCount", totalCount)
+                var totalCountParam = new SqlParameter("@TotalCount", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output,
-                    SqlDbType = SqlDbType.Int
                 };
                 command.CommandType = CommandType.StoredProcedure;
 
@@ -39,26 +78,19 @@ public class NoteRepository : INoteRepository
                 command.Parameters.Add(new SqlParameter("@PageSize", filterNoteDto.PageSize));
                 command.Parameters.Add(new SqlParameter("@SearchString", (object)filterNoteDto.SearchString ?? DBNull.Value));
                 command.Parameters.Add(totalCountParam);
-
+                List<NoteDto> noteDtos = new List<NoteDto>();
                 using (var reader = await command.ExecuteReaderAsync())
                 {
-
-                    // Check if the output parameter is present
-                    if (totalCountParam.Value is not null)
-                    {
-                        totalCount = (int)totalCountParam.Value;
-                    }
-
-                    var noteDtos = MapToNoteDtoList(reader);
-
-                    return new PaginatedList<NoteDto>
+                    noteDtos = MapToNoteDtoList(reader);
+                }
+                return new PaginatedList<NoteDto>
                     (noteDtos,
                     filterNoteDto.CurrentPage,
                     filterNoteDto.PageSize,
-                    totalCount);
-                }
+                    Convert.ToInt32(totalCountParam.Value));
             }
         }
+        
     }
 
     private List<NoteDto> MapToNoteDtoList(SqlDataReader reader)
