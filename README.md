@@ -16,6 +16,9 @@ This README provides essential information about the Case Manager CRUD applicati
   - Demonstrated service examples, leveraging extension methods, middleware and generics.
 - **DTOs:**
   - Utilized Data Transfer Objects (DTOs) for efficient data handling.
+ - **Error Handling with Serilog:** 
+   - Enhance the application's error logging and monitoring with Serilog.
+   - Add Global Exception Middleware
 - **Authentication and Authorization:**
   - Integrated Identity Framework for secure authentication and authorization.
 - **Email Notifications:**
