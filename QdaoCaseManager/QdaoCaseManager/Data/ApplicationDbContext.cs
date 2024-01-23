@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using QdaoCaseManager.Entites;
 using QdaoCaseManager.Shared.Entites;
 
 namespace QdaoCaseManager.Data
@@ -8,11 +9,18 @@ namespace QdaoCaseManager.Data
     {
         public DbSet<Case> Cases { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<CaseHistory> CaseHistories { get; set; }
 
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             modelBuilder.Entity<Case>()
+            modelBuilder.Entity<Case>()
+            .ToTable(tb => tb.HasTrigger("CaseDeleteTrigger"));
+
+            modelBuilder.Entity<Case>()
+           .ToTable(tb => tb.HasTrigger("CaseUpdateTrigger"));
+
+            modelBuilder.Entity<Case>()
             .Property(e => e.CreateDate)
             .HasDefaultValueSql("GETDATE()") // Use appropriate SQL function for your database
             .ValueGeneratedOnAdd(); // Only generate on entity creation;

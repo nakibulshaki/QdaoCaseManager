@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QdaoCaseManager.Data;
 
@@ -11,9 +12,11 @@ using QdaoCaseManager.Data;
 namespace QdaoCaseManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240123024604_AddCaseHistoryTable")]
+    partial class AddCaseHistoryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,14 +282,7 @@ namespace QdaoCaseManager.Migrations
 
                     b.HasIndex("AssignedToUserId");
 
-                    b.ToTable("Cases", t =>
-                        {
-                            t.HasTrigger("CaseDeleteTrigger");
-
-                            t.HasTrigger("CaseUpdateTrigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                    b.ToTable("Cases");
                 });
 
             modelBuilder.Entity("QdaoCaseManager.Shared.Entites.Note", b =>

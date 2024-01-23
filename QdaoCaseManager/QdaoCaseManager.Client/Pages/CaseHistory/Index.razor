@@ -1,0 +1,67 @@
+﻿@page "/caseHistory";
+@using Microsoft.AspNetCore.Authorization
+@using QdaoCaseManager.Client.Shared
+@using QdaoCaseManager.Extra
+@using QdaoCaseManager.Shared
+@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.Shared.Dtos.Cases
+@attribute [Authorize]
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
+@inject HttpClient HttpClient
+<PageTitle>Case</PageTitle>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h3>Case History Data</h3>
+        <p>This component demonstrates trigger generate data</p>
+    </div>
+</div>
+
+@if (CaseHistories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead class="table-group-divider">
+            <tr>
+                <th>ID</th>
+                <th>Case Id</th>
+                <th>Action Type</th>
+                <th>Action Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var caseHistory in CaseHistories)
+            {
+                <tr>
+                    <td>@caseHistory.Id</td>
+                    <td>@caseHistory.CaseId</td>
+                    <td>@caseHistory.ActionType</td>
+                    <td>@caseHistory.ActionTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+  }
+@code {
+    private IList<CaseHistoryDto> CaseHistories { get; set; } = new List<CaseHistoryDto>();
+  
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCases();
+    }
+
+    protected async Task LoadCases()
+    {
+
+        var response = await HttpClient.GetFromJsonAsync<IList<CaseHistoryDto>>("api/CaseHistories");
+        if (response is not null)
+            CaseHistories = response;
+        else
+            throw new Exception($"Something went wrong while getting data!");
+    }
+    
+
+}
