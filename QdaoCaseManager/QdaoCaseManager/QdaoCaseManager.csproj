@@ -28,8 +28,4 @@
     <Folder Include="logs\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\QdaoCaseManager.Client\Shared\TItem.razor" Link="TItem.razor" />
-  </ItemGroup>
-
 </Project>
