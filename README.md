@@ -13,7 +13,7 @@ This README provides essential information about the Case Manager CRUD applicati
 - **RESTful API:**
   - Developed a RESTful API to interact with the application.
 - **Service Example:**
-  - Demonstrated service examples, leveraging extension methods and generics.
+  - Demonstrated service examples, leveraging extension methods, middleware and generics.
 - **DTOs:**
   - Utilized Data Transfer Objects (DTOs) for efficient data handling.
 - **Authentication and Authorization:**
