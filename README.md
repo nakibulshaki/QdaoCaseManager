@@ -28,11 +28,7 @@ This README provides essential information about the Case Manager CRUD applicati
   - Incorporated reusable Pagination and Confirmation Components.
 - **Source Control:**
   - Maintained source code using GitHub for version control.
-- **CI/CD Implementation:**
-  - Implemented Continuous Integration and Continuous Deployment for streamlined development.
 
-## Deployment
-The application is deployed to Azure and can be accessed at [casemanager.azurewebsites.net](https://casemanager.azurewebsites.net).
 
 ## Getting Started
 To run the application locally or contribute to its development, follow the steps below:
