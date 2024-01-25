@@ -1,4 +1,7 @@
-﻿namespace QdaoCaseManager.Application.Cases;
+﻿using QdaoCaseManager.Application.Cases.Dtos;
+using QdaoCaseManager.Application.Common.Models;
+
+namespace QdaoCaseManager.Application.Cases;
 public interface ICaseAppService
 {
     Task CreateCase(CreateUpdateCaseDto Case);
@@ -6,7 +9,7 @@ public interface ICaseAppService
     Task<CaseDto> GetCaseById(int id);
     Task UpdateCase(int id, CreateUpdateCaseDto updatedCase);
     Task DeleteCase(int id);
-    Task<IList<SelectListItem>> GetCaseUsers();
+    Task<IList<SelectItem>> GetCaseUsers();
     Task<CreateUpdateCaseDto> GetUpdateCaseById(int id);
 }
 

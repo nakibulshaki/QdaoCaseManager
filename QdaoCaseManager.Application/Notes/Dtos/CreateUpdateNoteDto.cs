@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QdaoCaseManager.Application.Notes;
+namespace QdaoCaseManager.Application.Notes.Dtos;
 public class CreateUpdateNoteDto
 {
     public int Id { get; set; }

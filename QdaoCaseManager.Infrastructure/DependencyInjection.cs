@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QdaoCaseManager.Infrastructure.identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace QdaoCaseManager.Infrastructure;
 
@@ -17,7 +20,14 @@ namespace QdaoCaseManager.Infrastructure;
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         DataValidation.GuardAgainstNullString(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(connectionString));
+        services.AddDatabaseDeveloperPageExceptionFilter();
 
+        services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders();
         return services;
     }
 

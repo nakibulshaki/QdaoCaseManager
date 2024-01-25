@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Application.Notes;
+﻿namespace QdaoCaseManager.Application.Notes.Dtos;
 
 public class NoteDto
 {
