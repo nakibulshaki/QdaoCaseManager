@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Shared.Entites;
+﻿namespace QdaoCaseManager.Domain.Entities;
 public class Case : AuditRoot
 {
     public int Id { get; set; }

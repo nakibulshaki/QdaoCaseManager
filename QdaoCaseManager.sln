@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager", "QdaoCase
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Client", "QdaoCaseManager\QdaoCaseManager.Client\QdaoCaseManager.Client.csproj", "{565224BB-FD3C-4ED8-9D2E-726A7CC82040}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Shared", "Shared\QdaoCaseManager.Shared.csproj", "{AF69934D-1221-46DA-817C-1DB616B45DAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Domain", "QdaoCaseManager.Domain\QdaoCaseManager.Domain.csproj", "{EC761FB4-8E1D-4A6A-BB6B-FA198625F6EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Application", "QdaoCaseManager.Application\QdaoCaseManager.Application.csproj", "{AA1DCA21-0E2E-40E4-A995-6CECF47FAEA0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Infrastructure", "QdaoCaseManager.Infrastructure\QdaoCaseManager.Infrastructure.csproj", "{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +27,18 @@ Global
 		{565224BB-FD3C-4ED8-9D2E-726A7CC82040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565224BB-FD3C-4ED8-9D2E-726A7CC82040}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565224BB-FD3C-4ED8-9D2E-726A7CC82040}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF69934D-1221-46DA-817C-1DB616B45DAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF69934D-1221-46DA-817C-1DB616B45DAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF69934D-1221-46DA-817C-1DB616B45DAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF69934D-1221-46DA-817C-1DB616B45DAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC761FB4-8E1D-4A6A-BB6B-FA198625F6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC761FB4-8E1D-4A6A-BB6B-FA198625F6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC761FB4-8E1D-4A6A-BB6B-FA198625F6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC761FB4-8E1D-4A6A-BB6B-FA198625F6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA1DCA21-0E2E-40E4-A995-6CECF47FAEA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA1DCA21-0E2E-40E4-A995-6CECF47FAEA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA1DCA21-0E2E-40E4-A995-6CECF47FAEA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA1DCA21-0E2E-40E4-A995-6CECF47FAEA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

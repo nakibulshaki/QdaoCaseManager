@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Data;
+using QdaoCaseManager.Infrastructure.Data;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 namespace QdaoCaseManager.Controllers;
 
 [Route("api/[controller]")]

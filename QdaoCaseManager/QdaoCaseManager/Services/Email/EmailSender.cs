@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using SendGrid.Helpers.Mail;
 using SendGrid;
-using QdaoCaseManager.Data;
+using QdaoCaseManager.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 
 namespace QdaoCaseManager.Services.Email;
 

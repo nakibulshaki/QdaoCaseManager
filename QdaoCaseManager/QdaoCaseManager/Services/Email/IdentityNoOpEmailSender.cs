@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 
 namespace QdaoCaseManager.Services.Email
 {

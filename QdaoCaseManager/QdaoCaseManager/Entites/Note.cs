@@ -1,5 +1,5 @@
-﻿using QdaoCaseManager.Shared.Entites;
-namespace QdaoCaseManager.Shared.Entites;
+﻿using QdaoCaseManager.Domain.Entities;
+namespace QdaoCaseManager.Domain.Entities;
 public class Note : AuditRoot
 {
     public int Id { get; set; }

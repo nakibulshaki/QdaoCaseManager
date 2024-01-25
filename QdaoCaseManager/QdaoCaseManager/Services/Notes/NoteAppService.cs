@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Data;
+using QdaoCaseManager.Infrastructure.Data;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Repositories.Notes;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 
 namespace QdaoCaseManager.Services.Notes;
 public class NoteAppService : INoteAppService

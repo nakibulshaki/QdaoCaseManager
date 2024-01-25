@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Entites;
+﻿namespace QdaoCaseManager.Entities;
 
     public class CaseHistory
     {

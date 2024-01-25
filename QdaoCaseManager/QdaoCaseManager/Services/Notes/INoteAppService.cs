@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 
 namespace QdaoCaseManager.Services.Notes;
 public interface INoteAppService

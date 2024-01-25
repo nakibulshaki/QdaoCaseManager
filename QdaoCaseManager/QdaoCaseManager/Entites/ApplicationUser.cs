@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-namespace QdaoCaseManager.Shared.Entites;
+namespace QdaoCaseManager.Domain.Entities;
 public class ApplicationUser : IdentityUser
 {
 }

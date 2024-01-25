@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using QdaoCaseManager.Data;
+using QdaoCaseManager.Infrastructure.Data;
 using QdaoCaseManager.Repositories.Notes;
 using QdaoCaseManager.Services.Cases;
 using QdaoCaseManager.Services.Email;

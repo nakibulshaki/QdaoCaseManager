@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace QdaoCaseManager.Shared.Entites;
+namespace QdaoCaseManager.Domain.Entities;
 
 public class AuditRoot
 {

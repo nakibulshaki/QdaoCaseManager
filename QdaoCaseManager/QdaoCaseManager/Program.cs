@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
 using QdaoCaseManager.Components.Account;
-using QdaoCaseManager.Data;
+using QdaoCaseManager.Infrastructure.Data;
 using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
 using QdaoCaseManager.Services.Email;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using QdaoCaseManager.Components.Account.Pages;
 using QdaoCaseManager.Components.Account.Pages.Manage;
-using QdaoCaseManager.Data;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Infrastructure.Data;
+using QdaoCaseManager.Domain.Entities;
 using System.Security.Claims;
 using System.Text.Json;
 

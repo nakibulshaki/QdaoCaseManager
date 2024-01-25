@@ -7,7 +7,7 @@ using NuGet.Versioning;
 using QdaoCaseManager.Dtos;
 using QdaoCaseManager.Extra;
 using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Domain.Entities;
 using SendGrid.Helpers.Mail;
 using System.Data;
 namespace QdaoCaseManager.Repositories.Notes;
