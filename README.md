@@ -9,7 +9,7 @@ This README provides essential information about the Case Manager CRUD applicati
   - Implemented CRUD functionality using .NET 8, Blazor, and EFCore(Case Repository).
   - Utilized ADO.NET Stored Procedures for data manipulation (Note Repository).
 - **Database Operations:**
-  - Implemented database Trigger for enhanced functionality.
+  - Implemented database Trigger for enhanced functionality. (Case delete and Case update)
 - **RESTful API:**
   - Developed a RESTful API to interact with the application.
 - **Service Example:**
