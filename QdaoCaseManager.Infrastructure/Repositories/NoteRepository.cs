@@ -61,8 +61,7 @@ public class NoteRepository : INoteRepository
                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
                 Content = reader.GetString(reader.GetOrdinal("Content")),
                 CaseTittle = reader.GetString(reader.GetOrdinal("CaseTittle")),
-                Created = reader.GetDateTime(reader.GetOrdinal("Created")),
-                CreatedBy = reader.GetString(reader.GetOrdinal("CreatedBy"))
+                Created = reader.GetDateTimeOffset(reader.GetOrdinal("Created")),
             };
 
             noteDtos.Add(noteDto);

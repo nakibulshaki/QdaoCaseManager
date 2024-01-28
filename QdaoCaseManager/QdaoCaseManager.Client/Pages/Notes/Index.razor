@@ -54,7 +54,7 @@ else
                     <td>@caseItem.Id</td>
                     <td>@caseItem.Content</td>
                     <td>@caseItem.CaseTittle</td>
-                    <td>@caseItem.Created</td>
+                    <td>@caseItem.Created.ToLocalTime()</td>
                     <td>
                         <a href='/note/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
                             Edit
