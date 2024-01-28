@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using QdaoCaseManager.Infrastructure.Repositories;
 using QdaoCaseManager.Domain.Repositories;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using QdaoCaseManager.Infrastructure.Data.Interceptors;
+using QdaoCaseManager.Domain.Common.interfaces;
 
 namespace QdaoCaseManager.Infrastructure;
 
@@ -21,9 +24,15 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         DataValidation.GuardAgainstNullString(connectionString, message: "Connection string 'DefaultConnection' not found.");
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+
+            options.UseSqlServer(connectionString);
+
+        });
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

@@ -8,9 +8,9 @@ namespace QdaoCaseManager.Services.Notes;
 public class NoteAppService : INoteAppService
 {
     private readonly INoteRepository _noteRepository;
-    private readonly IRepository<Case> _caseRepository;
+    private readonly ICaseRepository _caseRepository;
     public NoteAppService(INoteRepository noteRepository,
-        IRepository<Case> caseRepository)
+        ICaseRepository caseRepository)
     {
         _noteRepository = noteRepository;
         _caseRepository = caseRepository;
@@ -44,18 +44,9 @@ public class NoteAppService : INoteAppService
             throw new InvalidOperationException("Note not found");
     }
 
-    public IList<SelectItem> GetNoteCases()
+    public async Task<IList<SelectItem>> GetNoteCases()
     {
-        var query = _caseRepository.AsQueryable();
-    var caseUsers = query
-                    .Select(x => new SelectItem
-                    {
-                        Value = x.Id.ToString(),
-                        Text = x.Tittle
-                    })
-                    .ToList();
-
-        return caseUsers;
+        return await _caseRepository.GetCaseUsers();
     }
 }
 

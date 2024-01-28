@@ -1,8 +1,8 @@
 ﻿using QdaoCaseManager.Domain.Common;
-using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using QdaoCaseManager.Domain.Common.interfaces;
 
 namespace QdaoCaseManager.Infrastructure.Data.Interceptors;
 

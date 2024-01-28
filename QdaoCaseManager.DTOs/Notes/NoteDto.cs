@@ -1,11 +1,11 @@
 ﻿namespace QdaoCaseManager.DTOs.Notes;
 
-public class NoteDto
+public record NoteDto
 {
     public int Id { get; set; }
-    public string Content { get; set; }
-    public string CaseTittle { get; set; }
-    public DateTime CreateDate { get; set; }
+    public required string Content { get; set; }
+    public required string CaseTittle { get; set; }
+    public DateTimeOffset Created { get; set; }
+    public string? CreatedBy { get; set; }
 }
-
 

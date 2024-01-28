@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Domain.Entities;
 using QdaoCaseManager.Infrastructure.identity;
+using System.Reflection;
 
 namespace QdaoCaseManager.Infrastructure.Data
 {
@@ -15,8 +17,9 @@ namespace QdaoCaseManager.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+  
     }
 }

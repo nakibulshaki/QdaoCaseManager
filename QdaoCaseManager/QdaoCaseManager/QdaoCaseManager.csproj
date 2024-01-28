@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\QdaoCaseManager.Application\QdaoCaseManager.Application.csproj" />
-    <ProjectReference Include="..\..\QdaoCaseManager.DTOs\QdaoCaseManager.DTOs.csproj" />
     <ProjectReference Include="..\QdaoCaseManager.Client\QdaoCaseManager.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />

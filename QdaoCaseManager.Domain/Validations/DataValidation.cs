@@ -8,4 +8,5 @@ public static class DataValidation
             throw new ArgumentNullException(parameterName, message);
         }
     }
+   
 }

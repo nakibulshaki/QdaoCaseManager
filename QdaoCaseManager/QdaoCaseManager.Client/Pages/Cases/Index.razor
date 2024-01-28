@@ -83,7 +83,7 @@ else
                         </span>
                     </td>
                     <td>@caseItem.AssignedToUserName</td>
-                    <td>@caseItem.Created</td>
+                    <td>@caseItem.Created.ToLocalTime()</td>
                     <td>
                         <a href='/case/edit/@caseItem.Id' class="btn btn-outline-dark" role="button">
                             Edit

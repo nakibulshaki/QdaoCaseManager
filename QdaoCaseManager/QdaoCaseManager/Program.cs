@@ -6,6 +6,8 @@ using QdaoCaseManager.Middlewares;
 using Serilog;
 using QdaoCaseManager.Infrastructure;
 using QdaoCaseManager.Application;
+using QdaoCaseManager.Domain.Common.interfaces;
+using QdaoCaseManager.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add support to logging with SERILOG
@@ -30,8 +32,13 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddScoped<IUser, CurrentUser>();
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddApplicationServices(builder.Configuration);
 
 //Register Exception Handler Service
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
