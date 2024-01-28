@@ -62,9 +62,9 @@ public class NotesController : ControllerBase
     }
     [HttpGet]
     [Route("GetCaseSelectListItems")]
-    public  ActionResult<IList<SelectItem>> GetNoteCases()
+    public  async Task<ActionResult<IList<SelectItem>>> GetNoteCases()
     {
-        var caseUsers =  _noteAppService.GetNoteCases();
+        var caseUsers =await  _noteAppService.GetNoteCases();
 
         if (caseUsers != null)
             return Ok(caseUsers);

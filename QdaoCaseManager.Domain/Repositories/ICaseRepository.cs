@@ -16,6 +16,7 @@ public interface ICaseRepository
     Task UpdateCase(int id, CreateUpdateCaseDto updatedCase);
     Task DeleteCase(int id);
     Task<IList<SelectItem>> GetCaseUsers();
+    Task<IList<SelectItem>> GetNotesSelectList();
     Task<CreateUpdateCaseDto> GetUpdateCaseById(int id);
 }
 

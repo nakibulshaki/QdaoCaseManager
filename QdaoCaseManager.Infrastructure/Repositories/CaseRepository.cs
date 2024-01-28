@@ -147,4 +147,16 @@ public class CaseRepository : ICaseRepository
 
         return caseUsers;
     }
+    public async Task<IList<SelectItem>> GetNotesSelectList()
+    {
+        var caseUsers = await _dbContext.Cases
+                                        .Select(x => new SelectItem
+                                        {
+                                            Value = x.Id.ToString(),
+                                            Text = x.Tittle
+                                        })
+                                        .ToListAsync();
+
+        return caseUsers;
+    }
 }

@@ -46,7 +46,7 @@ public class NoteAppService : INoteAppService
 
     public async Task<IList<SelectItem>> GetNoteCases()
     {
-        return await _caseRepository.GetCaseUsers();
+        return await _caseRepository.GetNotesSelectList();
     }
 }
 
