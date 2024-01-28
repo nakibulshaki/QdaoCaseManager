@@ -1,18 +1,11 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
 using QdaoCaseManager.Components.Account;
-using QdaoCaseManager.Infrastructure.Data;
-using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
-using QdaoCaseManager.Services.Email;
-using QdaoCaseManager.Domain.Entities;
 using Serilog;
 using QdaoCaseManager.Infrastructure;
-
+using QdaoCaseManager.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add support to logging with SERILOG
@@ -37,20 +30,15 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 //Register Exception Handler Service
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-// Application Services Register
-builder.Services.AddApplicationServices();
 
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
-//Enable when you have access
-//builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
 // Swagger
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

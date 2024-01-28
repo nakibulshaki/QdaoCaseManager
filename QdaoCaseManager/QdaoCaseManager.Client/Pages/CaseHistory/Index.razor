@@ -1,7 +1,6 @@
 ﻿@page "/caseHistory";
 @using Microsoft.AspNetCore.Authorization
-@using QdaoCaseManager.Application.Cases.Dtos
-@using QdaoCaseManager.Client.Shared
+@using QdaoCaseManager.DTOs.Cases
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient

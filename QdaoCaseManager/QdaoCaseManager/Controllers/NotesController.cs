@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Infrastructure.Data;
-using QdaoCaseManager.Dtos;
-using QdaoCaseManager.Extra;
 using QdaoCaseManager.Services.Notes;
-using QdaoCaseManager.Shared.Dtos;
 using QdaoCaseManager.Domain.Entities;
+using QdaoCaseManager.DTOs.Common.Models;
+using QdaoCaseManager.DTOs.Notes;
 namespace QdaoCaseManager.Controllers;
 
 [Route("api/[controller]")]
@@ -70,9 +62,9 @@ public class NotesController : ControllerBase
     }
     [HttpGet]
     [Route("GetCaseSelectListItems")]
-    public async Task<ActionResult<IList<SelectListItem>>> GetNoteCases()
+    public  ActionResult<IList<SelectItem>> GetNoteCases()
     {
-        var caseUsers = await _noteAppService.GetNoteCases();
+        var caseUsers =  _noteAppService.GetNoteCases();
 
         if (caseUsers != null)
             return Ok(caseUsers);

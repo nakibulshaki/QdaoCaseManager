@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Application.Cases.Dtos;
+﻿namespace QdaoCaseManager.DTOs.Cases;
 
 public class CaseHistoryDto
 {

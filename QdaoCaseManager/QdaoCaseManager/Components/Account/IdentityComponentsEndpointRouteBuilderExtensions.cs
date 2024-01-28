@@ -10,6 +10,7 @@ using QdaoCaseManager.Infrastructure.Data;
 using QdaoCaseManager.Domain.Entities;
 using System.Security.Claims;
 using System.Text.Json;
+using QdaoCaseManager.Infrastructure.identity;
 
 namespace Microsoft.AspNetCore.Routing
 {
