@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Domain.Enums;
+﻿namespace QdaoCaseManager.DTOs.Enums;
 public enum CaseStatus
 {
     Open,

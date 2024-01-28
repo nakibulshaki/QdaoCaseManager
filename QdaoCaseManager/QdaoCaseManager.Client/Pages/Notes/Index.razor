@@ -1,9 +1,8 @@
 ﻿@page "/note";
 @using Microsoft.AspNetCore.Authorization
 @using QdaoCaseManager.Client.Shared
-@using QdaoCaseManager.Extra
-@using QdaoCaseManager.Shared
-@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.DTOs.Common.Models
+@using QdaoCaseManager.DTOs.Notes
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient

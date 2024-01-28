@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SendGrid" Version="9.29.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QdaoCaseManager.Infrastructure\QdaoCaseManager.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

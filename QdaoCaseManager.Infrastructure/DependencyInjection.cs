@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 using QdaoCaseManager.Infrastructure.identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using QdaoCaseManager.Infrastructure.Repositories;
+using QdaoCaseManager.Domain.Repositories;
 
 namespace QdaoCaseManager.Infrastructure;
 
-    public static class DependencyInjection
+public static class DependencyInjection
     {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -28,6 +30,9 @@ namespace QdaoCaseManager.Infrastructure;
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddSignInManager()
             .AddDefaultTokenProviders();
+
+        services.AddScoped<INoteRepository, NoteRepository>();
+        services.AddScoped<ICaseRepository, CaseRepository>();
         return services;
     }
 

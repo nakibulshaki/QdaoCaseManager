@@ -1,4 +1,4 @@
-﻿using QdaoCaseManager.Domain.Enums;
+﻿using QdaoCaseManager.DTOs.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace QdaoCaseManager.Application.Cases.Dtos;

@@ -1,6 +1,6 @@
-﻿namespace QdaoCaseManager.Application.Common.Models;
+﻿namespace QdaoCaseManager.DTOs.Common.Models;
 [Serializable]
-public class PaginatedList<T> 
+public class PaginatedList<T>
 {
     public List<T> Items { get; set; }
     public int PageIndex { get; set; }

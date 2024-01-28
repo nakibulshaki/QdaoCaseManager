@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extentions\**" />
+    <Content Remove="Extentions\**" />
+    <EmbeddedResource Remove="Extentions\**" />
+    <None Remove="Extentions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\QdaoCaseManager.Infrastructure\QdaoCaseManager.Infrastructure.csproj" />
     <ProjectReference Include="..\QdaoCaseManager.Client\QdaoCaseManager.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
@@ -19,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extentions\" />
     <Folder Include="logs\" />
   </ItemGroup>
 

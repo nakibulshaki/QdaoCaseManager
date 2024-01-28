@@ -1,8 +1,8 @@
 ﻿﻿
 @page "/note/add"
 @page "/note/edit/{id:int}"
-@using QdaoCaseManager.Dtos
-@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.DTOs.Common.Models
+@using QdaoCaseManager.DTOs.Notes
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager

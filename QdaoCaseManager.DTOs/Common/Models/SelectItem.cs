@@ -1,5 +1,4 @@
-﻿
-namespace QdaoCaseManager.Application.Common.Models;
+﻿namespace QdaoCaseManager.DTOs.Common.Models;
 public class SelectItem
 {
     public string Value { get; set; }

@@ -1,9 +1,10 @@
 ﻿@page "/case";
 @using Microsoft.AspNetCore.Authorization
+@using QdaoCaseManager.Application.Cases.Dtos
 @using QdaoCaseManager.Client.Shared
-@using QdaoCaseManager.Extra
-@using QdaoCaseManager.Shared
-@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.DTOs.Cases
+@using QdaoCaseManager.DTOs.Common.Models
+@using QdaoCaseManager.DTOs.Enums
 @attribute [Authorize]
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient

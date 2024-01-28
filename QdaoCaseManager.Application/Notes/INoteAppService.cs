@@ -1,5 +1,6 @@
-﻿using QdaoCaseManager.Application.Common.Models;
-using QdaoCaseManager.Application.Notes.Dtos;
+﻿
+using QdaoCaseManager.DTOs.Common.Models;
+using QdaoCaseManager.DTOs.Notes;
 
 namespace QdaoCaseManager.Services.Notes;
 public interface INoteAppService
@@ -8,7 +9,7 @@ public interface INoteAppService
     Task<CreateUpdateNoteDto> GetNoteById(int id);
     Task UpdateNote(int id, CreateUpdateNoteDto updatedNote);
     Task DeleteNote(int id);
-    Task<IList<SelectItem>> GetNoteCases();
+    IList<SelectItem> GetNoteCases();
     Task<PaginatedList<NoteDto>> GetFiltedNotes(FilterNoteDto filter);
 }
 

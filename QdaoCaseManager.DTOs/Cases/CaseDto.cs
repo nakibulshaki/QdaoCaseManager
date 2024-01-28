@@ -1,6 +1,7 @@
-﻿using QdaoCaseManager.Domain.Enums;
+﻿
+using QdaoCaseManager.DTOs.Enums;
 
-namespace QdaoCaseManager.Application.Cases.Dtos;
+namespace QdaoCaseManager.DTOs.Cases;
 
 public class CaseDto
 {
@@ -11,7 +12,7 @@ public class CaseDto
     public string StatusString => Status.ToString();
     public string? AssignedToUserName { get; set; }
     public int NumberOfNotes { get; set; }
-    public DateTime CreateDate { get; set; }
+    public DateTimeOffset Created { get; set; }
 }
 
 

@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Infrastructure.Data;
-using QdaoCaseManager.Domain.Entities;
 using QdaoCaseManager.Application.Cases.Dtos;
+using QdaoCaseManager.Domain.Entities;
+using QdaoCaseManager.Domain.Repositories;
 using QdaoCaseManager.DTOs.Cases;
 using QdaoCaseManager.DTOs.Common.Models;
-using QdaoCaseManager.Application.Cases;
+using QdaoCaseManager.Infrastructure.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace QdaoCaseManager.Services.Cases;
-public class CaseAppService : ICaseAppService
+namespace QdaoCaseManager.Infrastructure.Repositories;
+public class CaseRepository : ICaseRepository
 {
     private readonly ApplicationDbContext _dbContext;
-    public CaseAppService(ApplicationDbContext dbContext)
+    public CaseRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -30,7 +35,7 @@ public class CaseAppService : ICaseAppService
     {
         var query = _dbContext.Cases.AsQueryable();
 
-        if (!String.IsNullOrWhiteSpace(filterCaseDto.SearchString))
+        if (!string.IsNullOrWhiteSpace(filterCaseDto.SearchString))
         {
             query = query.Where(x => x.Tittle.Contains(filterCaseDto.SearchString) ||
                                      x.Description.Contains(filterCaseDto.SearchString));
@@ -51,6 +56,7 @@ public class CaseAppService : ICaseAppService
         var queryResponse = await query
                              .Skip((filterCaseDto.CurrentPage - 1) * filterCaseDto.PageSize)
                              .Take(filterCaseDto.PageSize)
+                             .OrderByDescending(x => x.Created)
                              .Select(x => new CaseDto
                              {
                                  Id = x.Id,
@@ -129,10 +135,10 @@ public class CaseAppService : ICaseAppService
         _dbContext.Cases.Remove(caseEntry);
         await _dbContext.SaveChangesAsync();
     }
-    public async Task<IList<SelectListItem>> GetCaseUsers()
+    public async Task<IList<SelectItem>> GetCaseUsers()
     {
         var caseUsers = await _dbContext.Users
-                                        .Select(x => new SelectListItem
+                                        .Select(x => new SelectItem
                                         {
                                             Value = x.Id,
                                             Text = x.UserName
@@ -142,5 +148,3 @@ public class CaseAppService : ICaseAppService
         return caseUsers;
     }
 }
-
-

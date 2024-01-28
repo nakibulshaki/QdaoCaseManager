@@ -1,22 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Infrastructure.Data;
-using QdaoCaseManager.Dtos;
-using QdaoCaseManager.Extra;
-using QdaoCaseManager.Repositories.Notes;
-using QdaoCaseManager.Shared.Dtos;
+﻿
 using QdaoCaseManager.Domain.Entities;
+using QdaoCaseManager.Domain.Repositories;
+using QdaoCaseManager.DTOs.Common.Models;
+using QdaoCaseManager.DTOs.Notes;
 
 namespace QdaoCaseManager.Services.Notes;
 public class NoteAppService : INoteAppService
 {
     private readonly INoteRepository _noteRepository;
-    private readonly ApplicationDbContext _dbContext;
+    private readonly IRepository<Case> _caseRepository;
     public NoteAppService(INoteRepository noteRepository,
-           ApplicationDbContext dbContext)
+        IRepository<Case> caseRepository)
     {
         _noteRepository = noteRepository;
-        _dbContext = dbContext;
+        _caseRepository = caseRepository;
     }
     public async Task CreateNote(CreateUpdateNoteDto note)
     {
@@ -47,15 +44,16 @@ public class NoteAppService : INoteAppService
             throw new InvalidOperationException("Note not found");
     }
 
-    public async Task<IList<SelectListItem>> GetNoteCases()
+    public IList<SelectItem> GetNoteCases()
     {
-        var caseUsers = await _dbContext.Cases
-                                        .Select(x => new SelectListItem
-                                        {
-                                            Value = x.Id.ToString(),
-                                            Text = x.Tittle
-                                        })
-                                        .ToListAsync();
+        var query = _caseRepository.AsQueryable();
+    var caseUsers = query
+                    .Select(x => new SelectItem
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Tittle
+                    })
+                    .ToList();
 
         return caseUsers;
     }

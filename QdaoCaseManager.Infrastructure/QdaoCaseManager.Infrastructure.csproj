@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Identity\" />
 	  <PackageReference Include="ADO.Net.Client.Core" Version="1.4.5" />
 	  <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
-	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QdaoCaseManager.Domain\QdaoCaseManager.Domain.csproj" />
+    <ProjectReference Include="..\QdaoCaseManager.DTOs\QdaoCaseManager.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

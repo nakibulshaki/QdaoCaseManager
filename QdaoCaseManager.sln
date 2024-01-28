@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QdaoCaseManager.Infrastructure", "QdaoCaseManager.Infrastructure\QdaoCaseManager.Infrastructure.csproj", "{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QdaoCaseManager.DTOs", "QdaoCaseManager.DTOs\QdaoCaseManager.DTOs.csproj", "{7B17A5C9-9912-41D9-8710-99B494661280}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AE4F4A0-6C99-461C-8338-F7BA2FBD0A60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B17A5C9-9912-41D9-8710-99B494661280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B17A5C9-9912-41D9-8710-99B494661280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B17A5C9-9912-41D9-8710-99B494661280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B17A5C9-9912-41D9-8710-99B494661280}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

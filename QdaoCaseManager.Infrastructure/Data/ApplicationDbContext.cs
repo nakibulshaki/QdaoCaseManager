@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using QdaoCaseManager.Domain.Entities;
+using QdaoCaseManager.Infrastructure.identity;
 
 namespace QdaoCaseManager.Infrastructure.Data
 {
@@ -14,26 +15,6 @@ namespace QdaoCaseManager.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-
-            modelBuilder.Entity<Case>()
-            .Property(e => e.CreateDate)
-            .HasDefaultValueSql("GETDATE()") // Use appropriate SQL function for your database
-            .ValueGeneratedOnAdd(); // Only generate on entity creation;
-
-             modelBuilder.Entity<Case>()
-            .Property(e => e.UpdateDate)
-            .HasDefaultValueSql("GETDATE()")
-            .ValueGeneratedOnUpdate(); // Automatically update on add or update
-
-            modelBuilder.Entity<Note>()
-           .Property(e => e.CreateDate)
-           .HasDefaultValueSql("GETDATE()") // Use appropriate SQL function for your database
-           .ValueGeneratedOnAdd(); // Only generate on entity creation;
-
-            modelBuilder.Entity<Note>()
-           .Property(e => e.UpdateDate)
-           .HasDefaultValueSql("GETDATE()")
-           .ValueGeneratedOnUpdate(); // Automatically update on add or update
 
             base.OnModelCreating(modelBuilder);
         }

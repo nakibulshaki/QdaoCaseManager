@@ -1,4 +1,4 @@
-﻿namespace QdaoCaseManager.Application.Common.Models;
+﻿namespace QdaoCaseManager.DTOs.Common.Models;
 public class PaginationBase
 {
     public int CurrentPage { get; set; }

@@ -1,5 +1,6 @@
 ﻿using QdaoCaseManager.Application.Cases.Dtos;
-using QdaoCaseManager.Application.Common.Models;
+using QdaoCaseManager.DTOs.Cases;
+using QdaoCaseManager.DTOs.Common.Models;
 
 namespace QdaoCaseManager.Application.Cases;
 public interface ICaseAppService

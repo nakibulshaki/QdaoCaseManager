@@ -1,16 +1,12 @@
 ﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Data.SqlClient;
-using NuGet.Versioning;
-using QdaoCaseManager.Dtos;
-using QdaoCaseManager.Extra;
-using QdaoCaseManager.Shared.Dtos;
+using Microsoft.Extensions.Configuration;
 using QdaoCaseManager.Domain.Entities;
-using SendGrid.Helpers.Mail;
+using QdaoCaseManager.Domain.Repositories;
+using QdaoCaseManager.DTOs.Common.Models;
+using QdaoCaseManager.DTOs.Notes;
 using System.Data;
-namespace QdaoCaseManager.Repositories.Notes;
+namespace QdaoCaseManager.Infrastructure.Repositories;
 public class NoteRepository : INoteRepository
 {
     private readonly IConfiguration _config;
@@ -19,7 +15,7 @@ public class NoteRepository : INoteRepository
     {
         _config = config;
     }
-  
+
     public async Task<PaginatedList<NoteDto>> GetNotesWithPaginationAsync(FilterNoteDto filterNoteDto)
     {
 
@@ -51,7 +47,7 @@ public class NoteRepository : INoteRepository
                     Convert.ToInt32(totalCountParam.Value));
             }
         }
-        
+
     }
 
     private List<NoteDto> MapToNoteDtoList(SqlDataReader reader)
