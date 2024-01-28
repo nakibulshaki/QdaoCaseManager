@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Data;
-using QdaoCaseManager.Dtos;
-using QdaoCaseManager.Extra;
-using QdaoCaseManager.Services.Cases;
-using QdaoCaseManager.Shared.Dtos;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Application.Cases;
+using QdaoCaseManager.Application.Cases.Dtos;
+using QdaoCaseManager.DTOs.Cases;
+using QdaoCaseManager.DTOs.Common.Models;
 namespace QdaoCaseManager.Controllers;
 
 [Route("api/[controller]")]

@@ -1,9 +1,9 @@
 ﻿﻿
 @page "/case/add"
 @page "/case/edit/{id:int}"
-@using QdaoCaseManager.Dtos
-@using QdaoCaseManager.Shared
-@using QdaoCaseManager.Shared.Dtos
+@using QdaoCaseManager.Application.Cases.Dtos
+@using QdaoCaseManager.DTOs.Common.Models
+@using QdaoCaseManager.DTOs.Enums
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender:false))
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager

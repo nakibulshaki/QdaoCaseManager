@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using QdaoCaseManager.Client.Pages;
 using QdaoCaseManager.Components;
 using QdaoCaseManager.Components.Account;
-using QdaoCaseManager.Data;
-using QdaoCaseManager.Extentions;
 using QdaoCaseManager.Middlewares;
-using QdaoCaseManager.Services.Email;
-using QdaoCaseManager.Shared.Entites;
 using Serilog;
-
+using QdaoCaseManager.Infrastructure;
+using QdaoCaseManager.Application;
+using QdaoCaseManager.Domain.Common.interfaces;
+using QdaoCaseManager.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add support to logging with SERILOG
@@ -36,26 +32,20 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddScoped<IUser, CurrentUser>();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddApplicationServices(builder.Configuration);
+
 //Register Exception Handler Service
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-// Application Services Register
-builder.Services.AddApplicationServices();
 
-builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
-//Enable when you have access
-//builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
 // Swagger
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

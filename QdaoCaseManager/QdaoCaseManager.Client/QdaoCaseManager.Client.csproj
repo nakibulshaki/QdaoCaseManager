@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\QdaoCaseManager.Shared.csproj" />
+    <ProjectReference Include="..\..\QdaoCaseManager.DTOs\QdaoCaseManager.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

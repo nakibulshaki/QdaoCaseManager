@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using QdaoCaseManager.Client;
-using QdaoCaseManager.Data;
-using QdaoCaseManager.Shared.Entites;
+using QdaoCaseManager.Infrastructure.Data;
+using QdaoCaseManager.Domain.Entities;
 using System.Diagnostics;
 using System.Security.Claims;
+using QdaoCaseManager.Infrastructure.identity;
 
 namespace QdaoCaseManager.Components.Account
 {
